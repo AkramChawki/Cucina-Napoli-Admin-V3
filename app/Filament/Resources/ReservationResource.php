@@ -97,6 +97,11 @@ class ReservationResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()->email == "admin@cucinanapoli.com" || "palmier@cucinanapoli.com" || "anoual@cucinanapoli.com";
+        $user = auth()->user();
+        return $user && (
+            $user->email == "admin@cucinanapoli.com" ||
+            $user->email == "palmier@cucinanapoli.com" ||
+            $user->email == "anoual@cucinanapoli.com"
+        );
     }
 }
