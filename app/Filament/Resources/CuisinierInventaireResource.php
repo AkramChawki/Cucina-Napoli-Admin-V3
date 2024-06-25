@@ -101,6 +101,6 @@ class CuisinierInventaireResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()->email == "admin@cucinanapoli.com";
+        return auth()->user()->email == "admin@cucinanapoli.com" || "tayeb@cucinanapoli.com";
     }
 }

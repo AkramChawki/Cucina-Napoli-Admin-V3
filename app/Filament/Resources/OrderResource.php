@@ -123,6 +123,6 @@ class OrderResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return str_ends_with(auth()->user()->email, '@cucinanapoli.com');
+        return auth()->user()->email == "admin@cucinanapoli.com" || "palmier@cucinanapoli.com" || "anoual@cucinanapoli.com";
     }
 }
