@@ -23,6 +23,10 @@ Route::get('/', function () {
     return  redirect("/admin");
 });
 
+Route::get('/print-receipt/{pdf}',function ($pdf) {
+    $url = "https://restaurant.cucinanapoli.com/storage/receipt/{$pdf}";
+    return view('print', ['url' => $url]);
+})->name('print.receipt');;
 
 // Route::get('/test', function () {
 //     $today = Carbon::today();

@@ -58,6 +58,10 @@ class CuisinierOrderResource extends Resource
                 //
             ])
             ->actions([
+                Action::make("Imprimer")
+                    ->label('Imprimer')
+                    ->icon('heroicon-o-document')
+                    ->action(fn (CuisinierOrder $record) => route('print.receipt', ['pdf' => $record->pdf])),
                 Action::make("pdf")
                     ->label('pdf')
                     ->url(fn (CuisinierOrder $record): string => "https://restaurant.cucinanapoli.com/storage/documents/$record->pdf")
@@ -80,6 +84,12 @@ class CuisinierOrderResource extends Resource
             //
         ];
     }
+
+    public function printReceipt($record)
+{
+    $url = "https://restaurant.cucinanapoli.com/storage/receipt/{$record->pdf}";
+    return view('print', ['url' => $url]);
+}
 
     public static function getPages(): array
     {
