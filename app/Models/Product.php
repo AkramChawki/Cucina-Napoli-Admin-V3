@@ -19,12 +19,10 @@ class Product extends Model
         "category_id",
         "restaurant",
         "IDCaisse",
-        "visible",
     ];
 
     protected $casts = [
         "restaurant" => "array",
-        "visible" => "boolean"
     ];
 
     public function category()
