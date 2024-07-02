@@ -25,6 +25,8 @@ return new class extends Migration
             $table->text("image1");
             $table->text("image2");
             $table->text("quartiers");
+            $table->text("quartiers_Permitted");
+            $table->boolean("visible")->default(true);
             $table->timestamps();
         });
     }

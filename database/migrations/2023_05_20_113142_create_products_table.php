@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text("text");
             $table->text("image");
             $table->decimal("price");
+            $table->integer("IDCaisse");
+            $table->boolean("visible")->default(true);
             $table->foreignId("category_id")->constrained();
             $table->timestamps();
         });

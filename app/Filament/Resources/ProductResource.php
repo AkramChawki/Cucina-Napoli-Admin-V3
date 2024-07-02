@@ -57,6 +57,11 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('IDCaisse')
                     ->numeric()
                     ->required(),
+                Forms\Components\Toggle::make('visible')
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->inline(false)
+                    ->required(),
 
             ]);
     }
@@ -75,7 +80,9 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('restaurant')
                     ->separator(','),
                 Tables\Columns\TextColumn::make('price')
-                ->label("Prix"),
+                    ->label("Prix"),
+                Tables\Columns\IconColumn::make('visible')
+                    ->boolean()
             ])
             ->filters([
                 //

@@ -12,6 +12,8 @@ class Restaurant extends Model
     protected $guarded = [];
 
     protected $casts = [
-        "quartiers" => "array"
+        "quartiers" => "array",
+        "quartiers_Permitted" => "array",
+        "visible" => "boolean"
     ];
 }

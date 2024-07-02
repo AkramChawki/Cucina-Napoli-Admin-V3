@@ -75,6 +75,16 @@ class RestaurantResource extends Resource
                     ->multiple()
                     ->options(config("quartiers"))
                     ->required(),
+                Forms\Components\Select::make('quartiers_Permitted')
+                    ->label("Quartiers ou la livraison est accepte a partir de 300dh...")
+                    ->multiple()
+                    ->options(config("quartiers"))
+                    ->required(),
+                Forms\Components\Toggle::make('visible')
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->inline(false)
+                    ->required(),
             ]);
     }
 
@@ -88,6 +98,8 @@ class RestaurantResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('telephone')
                     ->searchable(),
+                Tables\Columns\IconColumn::make('visible')
+                    ->boolean()
             ])
             ->filters([
                 //
