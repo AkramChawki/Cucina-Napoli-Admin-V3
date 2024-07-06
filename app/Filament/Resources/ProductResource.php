@@ -49,8 +49,15 @@ class ProductResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('restaurant')
                     ->multiple()
-                    ->options(Restaurant::all()->pluck("name", "name"))
-                    ->required(),
+                    ->options(Restaurant::all()->pluck("name", "name")->mapWithKeys(function ($item, $key) {
+                        return [Str::lower($key) => $item];
+                    }))
+                    ->required()
+                    ->saveRelationshipsUsing(function ($record, $state) {
+                        $record->restaurant = array_map(function ($item) {
+                            return Str::lower($item);
+                        }, $state);
+                    }),
                 Forms\Components\TextInput::make('price')
                     ->numeric()
                     ->required(),
