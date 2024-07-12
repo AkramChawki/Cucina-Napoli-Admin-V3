@@ -27,6 +27,7 @@ return new class extends Migration
             $table->text("quartiers");
             $table->text("quartiers_Permitted");
             $table->boolean("visible")->default(true);
+            $table->string("avis");
             $table->timestamps();
         });
     }

@@ -85,6 +85,10 @@ class RestaurantResource extends Resource
                     ->offColor('danger')
                     ->inline(false)
                     ->required(),
+                Forms\Components\TextInput::make('avis')
+                    ->label("Lien des Avis Google")
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
