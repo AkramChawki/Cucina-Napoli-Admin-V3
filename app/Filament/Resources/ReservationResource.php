@@ -100,6 +100,7 @@ class ReservationResource extends Resource
         $user = auth()->user();
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
+            $user->email == "mmalika@cucinanapoli.com" ||
             $user->email == "palmier@cucinanapoli.com" ||
             $user->email == "anoual@cucinanapoli.com"
         );
