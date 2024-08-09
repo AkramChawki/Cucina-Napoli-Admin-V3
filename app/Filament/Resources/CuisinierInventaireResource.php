@@ -104,7 +104,6 @@ class CuisinierInventaireResource extends Resource
         $user = auth()->user();
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
-            $user->email == "tayeb@cucinanapoli.com" ||
             $user->email == "mmalika@cucinanapoli.com"
         );
     }

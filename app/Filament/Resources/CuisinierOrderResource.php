@@ -58,19 +58,14 @@ class CuisinierOrderResource extends Resource
                 //
             ])
             ->actions([
-                Action::make("Imprimer")
-                    ->label('Imprimer')
-                    ->url(fn (CuisinierOrder $record): string => "https://restaurant.cucinanapoli.com/storage/receipt/$record->pdf")
-                    ->openUrlInNewTab()
-                    ->icon('heroicon-o-printer'),
                 Action::make("pdf")
                     ->label('pdf')
-                    ->url(fn (CuisinierOrder $record): string => "https://restaurant.cucinanapoli.com/storage/documents/$record->pdf")
+                    ->url(fn(CuisinierOrder $record): string => "https://restaurant.cucinanapoli.com/storage/documents/$record->pdf")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
                 Action::make("voir")
                     ->label('Voir')
-                    ->url(fn (CuisinierOrder $record): string => CuisinierOrderResource::getUrl("details", ["record" => $record]))
+                    ->url(fn(CuisinierOrder $record): string => CuisinierOrderResource::getUrl("details", ["record" => $record]))
                     ->icon('heroicon-o-eye')
             ])
             ->bulkActions([
@@ -85,13 +80,6 @@ class CuisinierOrderResource extends Resource
             //
         ];
     }
-
-    public function printReceipt($record)
-{
-    $url = "https://restaurant.cucinanapoli.com/storage/receipt/{$record->pdf}";
-    return view('print', ['url' => $url]);
-}
-
     public static function getPages(): array
     {
         return [
@@ -111,7 +99,6 @@ class CuisinierOrderResource extends Resource
         $user = auth()->user();
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
-            $user->email == "tayeb@cucinanapoli.com" ||
             $user->email == "mmalika@cucinanapoli.com"
         );
     }
