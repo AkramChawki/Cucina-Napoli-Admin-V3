@@ -44,7 +44,7 @@ class EmployeResource extends Resource
                     ->hiddenOn(Pages\EditEmploye::class),
                 Forms\Components\Select::make('role')
                     ->multiple()
-                    ->options(Rubrique::all()->pluck('title', 'title'))
+                    ->options(config("roles"))
                     ->required(),
             ]);
     }
