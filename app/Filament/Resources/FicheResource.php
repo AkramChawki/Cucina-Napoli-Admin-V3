@@ -31,8 +31,7 @@ class FicheResource extends Resource
                     ->required()
                     ->maxLength(255),
                     Forms\Components\Select::make('rubrique_id')
-                    ->options(Rubrique::all()->pluck("title", "id"))
-                    ->required(),
+                    ->options(Rubrique::all()->pluck("title", "id")),
             ]);
     }
 

@@ -5,5 +5,6 @@ return [
     "Inventaire" => "Inventaire",
     "Livraison" => "Livraison",
     "Numero" => "Numero",
-    "Restaurant" => "Restaurant"
+    "Restaurant" => "Restaurant",
+    "BL" => "BL"
 ];
