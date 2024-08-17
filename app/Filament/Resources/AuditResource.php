@@ -51,7 +51,7 @@ class AuditResource extends Resource
         ->actions([
             Action::make("image")
                     ->label('image')
-                    ->url(fn(Audit $record): string => "https://restaurant.cucinanapoli.com/storage/documents/$record->image")
+                    ->url(fn(Audit $record): string => "https://restaurant.cucinanapoli.com/storage/$record->image")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document')
         ])
