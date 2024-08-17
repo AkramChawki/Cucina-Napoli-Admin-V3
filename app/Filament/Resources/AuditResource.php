@@ -49,10 +49,11 @@ class AuditResource extends Resource
             //
         ])
         ->actions([
-            Action::make("voir")
-                ->label('Voir')
-                ->url(fn (Audit $record): string => AuditResource::getUrl("details", ["record" => $record]))
-                ->icon('heroicon-o-eye')
+            Action::make("image")
+                    ->label('pdf')
+                    ->url(fn(Audit $record): string => "https://restaurant.cucinanapoli.com/storage/documents/$record->image")
+                    ->openUrlInNewTab()
+                    ->icon('heroicon-o-document')
         ])
         ->bulkActions([
             Tables\Actions\DeleteBulkAction::make(),
