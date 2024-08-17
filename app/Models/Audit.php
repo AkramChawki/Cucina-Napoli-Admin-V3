@@ -9,10 +9,16 @@ class Audit extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'date',
+        'restau',
+        'defeillance',
+        'image',
+    ];
 
     protected $casts = [
-        "image" => "array",
+        'date' => 'date',
     ];
 
 
