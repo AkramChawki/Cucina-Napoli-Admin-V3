@@ -98,7 +98,7 @@ class InventaireResource extends Resource
             $user->email == "nimane@cucinanapoli.com" ||
             $user->email == "mmalika@cucinanapoli.com" ||
             $user->email == "nyoussef@cucinanapoli.com" ||
-            $user->email == "ailham@cucinanapoli.com"
+            $user->email == "oilham@cucinanapoli.com"
         );
     }
 }
