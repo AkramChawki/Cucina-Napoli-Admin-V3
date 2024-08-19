@@ -51,7 +51,7 @@ class ControleResource extends Resource
         ->actions([
             Action::make("pdf")
                 ->label('pdf')
-                ->url(fn (Controle $record): string => "https://restaurant.cucinanapoli.com/storage/documents/$record->pdf")
+                ->url(fn (Controle $record): string => "https://restaurant.cucinanapoli.com/storage/inventire/$record->pdf")
                 ->openUrlInNewTab()
                 ->icon('heroicon-o-document'),
             Action::make("voir")
