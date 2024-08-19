@@ -20,7 +20,7 @@ class BLResource extends Resource
 
     protected static ?string $navigationGroup = 'flux de denrées';
 
-    protected static ?string $modelLabel = 'BL';
+    protected static ?string $modelLabel = 'BL Economat';
 
 
     protected static ?int $navigationSort = 4;
@@ -96,7 +96,10 @@ class BLResource extends Resource
         $user = auth()->user();
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
-            $user->email == "mmalika@cucinanapoli.com"
+            $user->email == "nimane@cucinanapoli.com" ||
+            $user->email == "mmalika@cucinanapoli.com" ||
+            $user->email == "nyoussef@cucinanapoli.com" ||
+            $user->email == "oilham@cucinanapoli.com"
         );
     }
 }

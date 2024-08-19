@@ -3,8 +3,10 @@ return [
     "Cuisine" => "Cuisine",
     "Pizzeria" => "Pizzeria",
     "Inventaire" => "Inventaire",
+    "Controle" => "Controle",
     "Livraison" => "Livraison",
     "Numero" => "Numero",
     "Restaurant" => "Restaurant",
-    "BL" => "BL"
+    "BL" => "BL",
+    "Audit" => "Audit"
 ];

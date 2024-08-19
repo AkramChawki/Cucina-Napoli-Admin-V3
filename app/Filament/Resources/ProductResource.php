@@ -20,7 +20,7 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Menu';
+    protected static ?string $navigationGroup = 'Gestion Restaurant';
 
     protected static ?int $navigationSort = 2;
 
@@ -31,7 +31,7 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->lazy()
-                    ->afterStateUpdated(fn (string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
+                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->unique(Product::class, 'slug', ignoreRecord: true),
@@ -117,7 +117,10 @@ class ProductResource extends Resource
         $user = auth()->user();
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
-            $user->email == "mmalika@cucinanapoli.com"
+            $user->email == "nimane@cucinanapoli.com" ||
+            $user->email == "mmalika@cucinanapoli.com" ||
+            $user->email == "nyoussef@cucinanapoli.com" ||
+            $user->email == "oilham@cucinanapoli.com"
         );
     }
 }
