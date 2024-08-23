@@ -8,5 +8,6 @@ return [
     "Numero" => "Numero",
     "Restaurant" => "Restaurant",
     "BL" => "BL",
-    "Audit" => "Audit"
+    "Audit" => "Audit",
+    "Labo" => "Labo"
 ];
