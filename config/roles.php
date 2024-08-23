@@ -9,5 +9,6 @@ return [
     "Restaurant" => "Restaurant",
     "BL" => "BL",
     "Audit" => "Audit",
-    "Labo" => "Labo"
+    "Labo" => "Labo",
+    "Dark Kitchen" => "Dark Kitchen"
 ];
