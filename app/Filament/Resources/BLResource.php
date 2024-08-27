@@ -54,7 +54,7 @@ class BLResource extends Resource
         ->actions([
             Action::make("pdf")
                 ->label('pdf')
-                ->url(fn (BL $record): string => "https://restaurant.cucinanapoli.com/storage/documents/$record->pdf")
+                ->url(fn (BL $record): string => "https://restaurant.cucinanapoli.com/storage/bl/$record->pdf")
                 ->openUrlInNewTab()
                 ->icon('heroicon-o-document'),
             Action::make("voir")
