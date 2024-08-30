@@ -56,7 +56,7 @@ class AuditResource extends Resource
                     ->icon('heroicon-o-document'),
             Action::make("pdf")
                     ->label('pdf')
-                    ->url(fn(Audit $record): string => "https://restaurant.cucinanapoli.com/storage/$record->pdf")
+                    ->url(fn(Audit $record): string => "$record->pdf")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
         ])
