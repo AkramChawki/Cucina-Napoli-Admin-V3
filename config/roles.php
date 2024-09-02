@@ -10,5 +10,5 @@ return [
     "BL" => "BL",
     "Audit" => "Audit",
     "Labo" => "Labo",
-    "Dark Kitchen" => "Dark Kitchen"
+    "Napoli Gang" => "Napoli Gang"
 ];

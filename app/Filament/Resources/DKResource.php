@@ -2,25 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CuisinierOrderResource\Pages;
-use App\Models\CuisinierOrder;
+use App\Filament\Resources\DKResource\Pages;
+use App\Filament\Resources\DKResource\RelationManagers;
+use App\Models\DK;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Table;
 
-
-class CuisinierOrderResource extends Resource
+class DKResource extends Resource
 {
-    protected static ?string $model = CuisinierOrder::class;
+    protected static ?string $model = DK::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'flux de denrées';
-    protected static ?string $modelLabel = 'Commande Cuisinier';
-
-
-    protected static ?int $navigationSort = 4;
+    protected static ?string $modelLabel = 'Labo';
 
     public static function form(Form $form): Form
     {
@@ -58,17 +56,18 @@ class CuisinierOrderResource extends Resource
             ->actions([
                 Action::make("pdf")
                     ->label('pdf')
-                    ->url(fn(CuisinierOrder $record): string => "https://restaurant.cucinanapoli.com/storage/orders/$record->pdf")
+                    ->url(fn(DK $record): string => "https://restaurant.cucinanapoli.com/storage/dk/$record->pdf")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
                 Action::make("voir")
                     ->label('Voir')
-                    ->url(fn(CuisinierOrder $record): string => CuisinierOrderResource::getUrl("details", ["record" => $record]))
+                    ->url(fn(DK $record): string => DKResource::getUrl("details", ["record" => $record]))
                     ->icon('heroicon-o-eye')
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
@@ -78,15 +77,18 @@ class CuisinierOrderResource extends Resource
             //
         ];
     }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCuisinierOrders::route('/'),
-            'create' => Pages\CreateCuisinierOrder::route('/create'),
-            'edit' => Pages\EditCuisinierOrder::route('/{record}/edit'),
-            'details' => Pages\CuisinierOrderDetails::route('/{record}/details'),
+            'index' => Pages\ListDKS::route('/'),
+            'create' => Pages\CreateDK::route('/create'),
+            'edit' => Pages\EditDK::route('/{record}/edit'),
+            'details' => Pages\DKDetails::route('/{record}/details'),
+
         ];
     }
+
     public static function canCreate(): bool
     {
         return false;
