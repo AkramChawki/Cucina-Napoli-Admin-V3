@@ -10,5 +10,6 @@ return [
     "BL" => "BL",
     "Audit" => "Audit",
     "Labo" => "Labo",
-    "Napoli Gang" => "Napoli Gang"
+    "Napoli Gang" => "Napoli Gang",
+    "Menage" => "Menage",
 ];
