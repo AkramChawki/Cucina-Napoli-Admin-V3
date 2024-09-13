@@ -3,14 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AuditResource\Pages;
-use App\Filament\Resources\AuditResource\RelationManagers;
 use App\Models\Audit;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
-
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class AuditResource extends Resource
 {
@@ -25,46 +25,61 @@ class AuditResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                //
-            ]);
+            ->schema([]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-        ->columns([
-            Tables\Columns\TextColumn::make('name')
-                ->label("Audit Par :")
-                ->searchable(),
-            Tables\Columns\TextColumn::make('restau')
-                ->label("Restaurant")
-                ->searchable(),
-            Tables\Columns\TextColumn::make('date')
-                ->label("Date d Audit")
-                ->date(),
-        ])
-        ->defaultSort('created_at', 'desc')
-        ->filters([
-            //
-        ])
-        ->actions([
-            Action::make("image")
+            ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->label("Audit Par :")
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('restau')
+                    ->label("Restaurant")
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('date')
+                    ->label("Date d Audit")
+                    ->date(),
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->filters([
+                //
+            ])
+            ->actions([
+                Action::make("image")
                     ->label('image')
                     ->url(fn(Audit $record): string => "https://restaurant.cucinanapoli.com/storage/$record->image")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
-            Action::make("pdf")
+                Action::make("pdf")
                     ->label('pdf')
                     ->url(fn(Audit $record): string => "$record->pdf")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
-        ])
-        ->bulkActions([
-            Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->after(function (Audit $record) {
+                        $filesToDelete = array_filter([$record->image, $record->pdf]);
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make()
+                    ->after(function (Collection $records) {
+                        $filesToDelete = $records->flatMap(function ($record) {
+                            return array_filter([$record->image, $record->pdf]);
+                        })->values()->all();
 
-        ]);
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
+
+            ]);
     }
+
 
     public static function getRelations(): array
     {

@@ -11,6 +11,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 
@@ -89,9 +91,25 @@ class ProductResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->after(function (Product $record) {
+                        $filesToDelete = array_filter([$record->image]);
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->after(function (Collection $records) {
+                        $filesToDelete = $records->flatMap(function ($record) {
+                            return array_filter([$record->image]);
+                        })->values()->all();
+
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
 
             ]);
     }

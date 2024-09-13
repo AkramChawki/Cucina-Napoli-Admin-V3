@@ -9,6 +9,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class RestaurantResource extends Resource
@@ -30,11 +32,18 @@ class RestaurantResource extends Resource
                     ->required()
                     ->lazy()
                     ->maxLength(255)
-                    ->afterStateUpdated(fn (string $context, $state, callable $set) => $context === 'create' ? $set('slug', str::slug($state)) : null),
+                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', str::slug($state)) : null),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->unique(Restaurant::class, 'slug', ignoreRecord: true)
                     ->maxLength(255),
+                Forms\Components\Select::make('type')
+                    ->options([
+                        'draft' => 'Draft',
+                        'reviewing' => 'Reviewing',
+                    ])
+                    ->native(false)
+                    ->columnSpan("full"),
                 Forms\Components\TextInput::make('telephone')
                     ->required()
                     ->maxLength(255),
@@ -110,11 +119,26 @@ class RestaurantResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->after(function (Restaurant $record) {
+                        $filesToDelete = array_filter([$record->pdf]);
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->after(function (Collection $records) {
+                        $filesToDelete = $records->flatMap(function ($record) {
+                            return array_filter([$record->pdf]);
+                        })->values()->all();
+
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
+
             ]);
     }
 

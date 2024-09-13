@@ -4,11 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\BlogResource\Pages;
 use App\Models\Blog;
+use Filament\Actions\DeleteAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 
@@ -81,11 +84,28 @@ class BlogResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->after(function (Blog $record) {
+                        $filesToDelete = array_filter([$record->imageP, $record->image1, $record->image2]);
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->after(function (Collection $records) {
+                        $filesToDelete = $records->flatMap(function ($record) {
+                            return array_filter([$record->imageP, $record->image1, $record->image2]);
+                        })->values()->all();
+
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
             ]);
     }
+
 
     public static function getRelations(): array
     {

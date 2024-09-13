@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DKResource\Pages;
-use App\Filament\Resources\DKResource\RelationManagers;
 use App\Models\DK;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,6 +10,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class DKResource extends Resource
 {
@@ -62,12 +63,27 @@ class DKResource extends Resource
                 Action::make("voir")
                     ->label('Voir')
                     ->url(fn(DK $record): string => DKResource::getUrl("details", ["record" => $record]))
-                    ->icon('heroicon-o-eye')
+                    ->icon('heroicon-o-eye'),
+                Tables\Actions\DeleteAction::make()
+                    ->after(function (DK $record) {
+                        $filesToDelete = array_filter([$record->pdf]);
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->after(function (Collection $records) {
+                        $filesToDelete = $records->flatMap(function ($record) {
+                            return array_filter([$record->pdf]);
+                        })->values()->all();
+
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
+
             ]);
     }
 

@@ -3,14 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BLResource\Pages;
-use App\Filament\Resources\BLResource\RelationManagers;
 use App\Models\BL;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class BLResource extends Resource
 {
@@ -36,36 +36,52 @@ class BLResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        ->columns([
-            Tables\Columns\TextColumn::make('name')
-                ->label("Inventaiire Par :")
-                ->searchable(),
-            Tables\Columns\TextColumn::make('restau')
-                ->label("Restaurant")
-                ->searchable(),
-            Tables\Columns\TextColumn::make('created_at')
-                ->label("Date d inventaire")
-                ->date(),
-        ])
-        ->defaultSort('created_at', 'desc')
-        ->filters([
-            //
-        ])
-        ->actions([
-            Action::make("pdf")
-                ->label('pdf')
-                ->url(fn (BL $record): string => "https://restaurant.cucinanapoli.com/storage/bl/$record->pdf")
-                ->openUrlInNewTab()
-                ->icon('heroicon-o-document'),
-            Action::make("voir")
-                ->label('Voir')
-                ->url(fn (BL $record): string => BLResource::getUrl("details", ["record" => $record]))
-                ->icon('heroicon-o-eye')
-        ])
-        ->bulkActions([
-            Tables\Actions\DeleteBulkAction::make(),
+            ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->label("Inventaiire Par :")
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('restau')
+                    ->label("Restaurant")
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label("Date d inventaire")
+                    ->date(),
+            ])
+            ->defaultSort('created_at', 'desc')
+            ->filters([
+                //
+            ])
+            ->actions([
+                Action::make("pdf")
+                    ->label('pdf')
+                    ->url(fn(BL $record): string => "https://restaurant.cucinanapoli.com/storage/bl/$record->pdf")
+                    ->openUrlInNewTab()
+                    ->icon('heroicon-o-document'),
+                Action::make("voir")
+                    ->label('Voir')
+                    ->url(fn(BL $record): string => BLResource::getUrl("details", ["record" => $record]))
+                    ->icon('heroicon-o-eye'),
+                Tables\Actions\DeleteAction::make()
+                    ->after(function (BL $record) {
+                        $filesToDelete = array_filter([$record->pdf]);
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make()
+                    ->after(function (Collection $records) {
+                        $filesToDelete = $records->flatMap(function ($record) {
+                            return array_filter([$record->pdf]);
+                        })->values()->all();
 
-        ]);
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
+
+            ]);
     }
 
     public static function getRelations(): array

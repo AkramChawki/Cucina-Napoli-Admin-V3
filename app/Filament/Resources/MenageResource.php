@@ -2,24 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LaboResource\Pages;
-use App\Models\Labo;
+use App\Filament\Resources\MenageResource\Pages;
+use App\Models\Menage;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
-class LaboResource extends Resource
+class MenageResource extends Resource
 {
-    protected static ?string $model = Labo::class;
-
+    protected static ?string $model = Menage::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'flux de denrées';
-    protected static ?string $modelLabel = 'Labo';
+    protected static ?string $modelLabel = 'Menage';
 
     public static function form(Form $form): Form
     {
@@ -57,15 +56,15 @@ class LaboResource extends Resource
             ->actions([
                 Action::make("pdf")
                     ->label('pdf')
-                    ->url(fn(Labo $record): string => "https://restaurant.cucinanapoli.com/storage/labo/$record->pdf")
+                    ->url(fn(Menage $record): string => "https://restaurant.cucinanapoli.com/storage/menage/$record->pdf")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
                 Action::make("voir")
                     ->label('Voir')
-                    ->url(fn(Labo $record): string => LaboResource::getUrl("details", ["record" => $record]))
+                    ->url(fn(Menage $record): string => MenageResource::getUrl("details", ["record" => $record]))
                     ->icon('heroicon-o-eye'),
-                Tables\Actions\DeleteAction::make()
-                    ->after(function (Labo $record) {
+                    Tables\Actions\DeleteAction::make()
+                    ->after(function (Menage $record) {
                         $filesToDelete = array_filter([$record->pdf]);
                         if (!empty($filesToDelete)) {
                             Storage::disk('public')->delete($filesToDelete);
@@ -97,10 +96,11 @@ class LaboResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLabos::route('/'),
-            'create' => Pages\CreateLabo::route('/create'),
-            'edit' => Pages\EditLabo::route('/{record}/edit'),
-            'details' => Pages\LaboDetails::route('/{record}/details'),
+            'index' => Pages\ListMenages::route('/'),
+            'create' => Pages\CreateMenage::route('/create'),
+            'edit' => Pages\EditMenage::route('/{record}/edit'),
+            'details' => Pages\MenageDetails::route('/{record}/details'),
+
         ];
     }
 

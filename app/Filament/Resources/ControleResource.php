@@ -9,6 +9,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class ControleResource extends Resource
 {
@@ -57,12 +59,28 @@ class ControleResource extends Resource
             Action::make("voir")
                 ->label('Voir')
                 ->url(fn (Controle $record): string => ControleResource::getUrl("details", ["record" => $record]))
-                ->icon('heroicon-o-eye')
-        ])
-        ->bulkActions([
-            Tables\Actions\DeleteBulkAction::make(),
+                ->icon('heroicon-o-eye'),
+                Tables\Actions\DeleteAction::make()
+                    ->after(function (Controle $record) {
+                        $filesToDelete = array_filter([$record->pdf]);
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make()
+                    ->after(function (Collection $records) {
+                        $filesToDelete = $records->flatMap(function ($record) {
+                            return array_filter([$record->pdf]);
+                        })->values()->all();
 
-        ]);
+                        if (!empty($filesToDelete)) {
+                            Storage::disk('public')->delete($filesToDelete);
+                        }
+                    }),
+
+            ]);
     }
 
     public static function getRelations(): array
