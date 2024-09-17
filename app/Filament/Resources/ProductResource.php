@@ -51,7 +51,7 @@ class ProductResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('restaurant')
                     ->multiple()
-                    ->options(Restaurant::all()->pluck("name", "name")->mapWithKeys(function ($item, $key) {
+                    ->options(Restaurant::all()->pluck("slug", "slug")->mapWithKeys(function ($item, $key) {
                         return [Str::lower($key) => $item];
                     }))
                     ->required()
