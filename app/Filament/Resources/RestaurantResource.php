@@ -32,7 +32,18 @@ class RestaurantResource extends Resource
                     ->required()
                     ->lazy()
                     ->maxLength(255)
-                    ->afterStateUpdated(fn(string $context, $state, callable $set) => $context === 'create' ? $set('slug', str::slug($state)) : null),
+                    ->afterStateUpdated(function (string $context, $state, callable $set) {
+                        if ($context === 'create') {
+                            $parts = explode('-', $state);
+                            if (count($parts) > 1) {
+                                $location = trim(end($parts));
+                                $slug = Str::of($location)
+                                    ->slug()
+                                    ->lower();
+                                $set('slug', $slug);
+                            }
+                        }
+                    }),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->unique(Restaurant::class, 'slug', ignoreRecord: true)
@@ -99,12 +110,12 @@ class RestaurantResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('type')
-                ->label("Type de Restaurant")
-                ->options([
-                    'Cucina Napoli' => 'Cucina Napoli',
-                    'Napoli Gang' => 'Napoli Gang'
-                ])
-                ->required(),
+                    ->label("Type de Restaurant")
+                    ->options([
+                        'Cucina Napoli' => 'Cucina Napoli',
+                        'Napoli Gang' => 'Napoli Gang'
+                    ])
+                    ->required(),
             ]);
     }
 
