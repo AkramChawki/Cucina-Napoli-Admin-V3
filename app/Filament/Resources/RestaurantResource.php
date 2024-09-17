@@ -98,6 +98,13 @@ class RestaurantResource extends Resource
                     ->label("Lien des Avis Google")
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('type')
+                ->label("Type de Restaurant")
+                ->options([
+                    'Cucina Napoli' => 'Cucina Napoli',
+                    'Napoli Gang' => 'Napoli Gang'
+                ])
+                ->required(),
             ]);
     }
 
