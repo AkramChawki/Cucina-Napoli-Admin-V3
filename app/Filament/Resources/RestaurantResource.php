@@ -48,13 +48,6 @@ class RestaurantResource extends Resource
                     ->required()
                     ->unique(Restaurant::class, 'slug', ignoreRecord: true)
                     ->maxLength(255),
-                Forms\Components\Select::make('type')
-                    ->options([
-                        'draft' => 'Draft',
-                        'reviewing' => 'Reviewing',
-                    ])
-                    ->native(false)
-                    ->columnSpan("full"),
                 Forms\Components\TextInput::make('telephone')
                     ->required()
                     ->maxLength(255),
@@ -113,9 +106,10 @@ class RestaurantResource extends Resource
                     ->label("Type de Restaurant")
                     ->options([
                         'Cucina Napoli' => 'Cucina Napoli',
-                        'Napoli Gang' => 'Napoli Gang'
+                        'To Go' => 'To Go',
                     ])
-                    ->required(),
+                    ->required()
+                    ->columnSpan("full"),
             ]);
     }
 
