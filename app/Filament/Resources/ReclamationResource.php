@@ -65,17 +65,6 @@ class ReclamationResource extends Resource
         return false;
     }
 
-    public static function shouldRegisterNavigation(): bool
-    {
-        $user = auth()->user();
-        return $user && (
-            $user->email == "admin@cucinanapoli.com" ||
-            $user->email == "nimane@cucinanapoli.com" ||
-            $user->email == "mmalika@cucinanapoli.com" ||
-            $user->email == "nyoussef@cucinanapoli.com" ||
-            $user->email == "oilham@cucinanapoli.com"
-        );
-    }
 
     public static function getRelations(): array
     {
@@ -89,5 +78,19 @@ class ReclamationResource extends Resource
         return [
             'index' => Pages\ListReclamations::route('/'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = auth()->user();
+        return $user && (
+            $user->email == "admin@cucinanapoli.com" ||
+            $user->email == "nimane@cucinanapoli.com" ||
+            $user->email == "mmalika@cucinanapoli.com" ||
+            $user->email == "nyoussef@cucinanapoli.com" ||
+            $user->email == "oilham@cucinanapoli.com" ||
+            $user->email == "dmeriem@cucinanapoli.com" ||
+            $user->email == "afatima@cucinanapoli.com"
+        );
     }
 }
