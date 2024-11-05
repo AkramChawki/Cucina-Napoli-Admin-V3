@@ -102,6 +102,8 @@ class BoissonResource extends Resource
             'index' => Pages\ListBoissons::route('/'),
             'create' => Pages\CreateBoisson::route('/create'),
             'edit' => Pages\EditBoisson::route('/{record}/edit'),
+            'details' => Pages\BoissonDetails::route('/{record}/details'),
+
         ];
     }
 
