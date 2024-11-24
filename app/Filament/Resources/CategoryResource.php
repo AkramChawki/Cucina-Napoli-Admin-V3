@@ -45,7 +45,11 @@ class CategoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->reorderable('id')
+            ->defaultSort('id', 'asc')
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->sortable(),
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Image'),
                 Tables\Columns\TextColumn::make('name')
