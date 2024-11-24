@@ -11,7 +11,6 @@ use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Support\Str;
 
-
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
@@ -45,11 +44,9 @@ class CategoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->reorderable('id')
-            ->defaultSort('id', 'asc')
+            ->reorderable('sort_order')
+            ->defaultSort('sort_order', 'asc')
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->sortable(),
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Image'),
                 Tables\Columns\TextColumn::make('name')
@@ -65,7 +62,6 @@ class CategoryResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-
             ]);
     }
 
