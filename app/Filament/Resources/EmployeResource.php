@@ -107,9 +107,7 @@ class EmployeResource extends Resource
                             ->maxSize(10240)
                             ->nullable()
                             ->visibility('public')
-                            ->getUploadedFileUrlUsing(
-                                fn($state) => $state ? "https://restaurant.cucinanapoli.com/public/storage/{$state}" : null
-                            ),
+                            ->urlPrefix('https://restaurant.cucinanapoli.com/public/storage/'),
 
                         Forms\Components\FileUpload::make('id_card_front')
                             ->label('CIN Recto')
@@ -118,9 +116,7 @@ class EmployeResource extends Resource
                             ->required()
                             ->maxSize(10240)
                             ->visibility('public')
-                            ->getUploadedFileUrlUsing(
-                                fn($state) => $state ? "https://restaurant.cucinanapoli.com/public/storage/{$state}" : null
-                            ),
+                            ->urlPrefix('https://restaurant.cucinanapoli.com/public/storage/'),
 
                         Forms\Components\FileUpload::make('id_card_back')
                             ->label('CIN Verso')
@@ -129,9 +125,7 @@ class EmployeResource extends Resource
                             ->required()
                             ->maxSize(10240)
                             ->visibility('public')
-                            ->getUploadedFileUrlUsing(
-                                fn($state) => $state ? "https://restaurant.cucinanapoli.com/public/storage/{$state}" : null
-                            ),
+                            ->urlPrefix('https://restaurant.cucinanapoli.com/public/storage/'),
                     ])->columns(2),
             ]);
     }
