@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Resources\EmployeResource\Pages;
+namespace App\Filament\Resources\AccountResource\Pages;
 
-use App\Filament\Resources\EmployeResource;
+use App\Filament\Resources\AccountResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Hash;
 
-class CreateEmploye extends CreateRecord
+class CreateAccount extends CreateRecord
 {
-    protected static string $resource = EmployeResource::class;
+    protected static string $resource = AccountResource::class;
 
     protected function mutateFormDataBeforeSave(array $data): array
 {

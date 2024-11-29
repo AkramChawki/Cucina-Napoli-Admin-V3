@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EmployeResource\Pages;
+use App\Filament\Resources\AccountResource\Pages;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,7 +12,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 
 
-class EmployeResource extends Resource
+class AccountResource extends Resource
 {
     protected static ?string $model = User::class;
 
@@ -20,9 +20,9 @@ class EmployeResource extends Resource
 
     protected static ?string $navigationGroup = 'CRM';
 
-    protected static ?string $modelLabel = 'Employés';
+    protected static ?string $modelLabel = 'Comptes';
 
-    protected static ?string $slug = 'employes';
+    protected static ?string $slug = 'comptes';
 
     protected static ?int $navigationSort = 1;
 
@@ -40,7 +40,7 @@ class EmployeResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->maxLength(255)
-                    ->hiddenOn(Pages\EditEmploye::class),
+                    ->hiddenOn(Pages\EditAccount::class),
                 Forms\Components\Select::make('role')
                     ->multiple()
                     ->options(config("roles"))
@@ -86,9 +86,9 @@ class EmployeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEmployes::route('/'),
-            'create' => Pages\CreateEmploye::route('/create'),
-            'edit' => Pages\EditEmploye::route('/{record}/edit'),
+            'index' => Pages\ListAccounts::route('/'),
+            'create' => Pages\CreateAccount::route('/create'),
+            'edit' => Pages\EditAccount::route('/{record}/edit'),
         ];
     }
 
