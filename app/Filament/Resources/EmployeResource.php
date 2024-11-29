@@ -103,21 +103,35 @@ class EmployeResource extends Resource
                             ->label('Photo de profil')
                             ->image()
                             ->imageEditor()
-                            ->directory('https://restaurant.cucinanapoli.com/public/storage/')
+                            ->directory('profile-photos')
                             ->maxSize(10240)
-                            ->nullable(),
+                            ->nullable()
+                            ->visibility('public')
+                            ->getUploadedFileUrlUsing(
+                                fn($state) => $state ? "https://restaurant.cucinanapoli.com/public/storage/{$state}" : null
+                            ),
+
                         Forms\Components\FileUpload::make('id_card_front')
                             ->label('CIN Recto')
                             ->image()
-                            ->directory('https://restaurant.cucinanapoli.com/public/storage/')
+                            ->directory('id-cards')
                             ->required()
-                            ->maxSize(10240),
+                            ->maxSize(10240)
+                            ->visibility('public')
+                            ->getUploadedFileUrlUsing(
+                                fn($state) => $state ? "https://restaurant.cucinanapoli.com/public/storage/{$state}" : null
+                            ),
+
                         Forms\Components\FileUpload::make('id_card_back')
                             ->label('CIN Verso')
                             ->image()
-                            ->directory('https://restaurant.cucinanapoli.com/public/storage/')
+                            ->directory('id-cards')
                             ->required()
-                            ->maxSize(10240),
+                            ->maxSize(10240)
+                            ->visibility('public')
+                            ->getUploadedFileUrlUsing(
+                                fn($state) => $state ? "https://restaurant.cucinanapoli.com/public/storage/{$state}" : null
+                            ),
                     ])->columns(2),
             ]);
     }
@@ -171,8 +185,8 @@ class EmployeResource extends Resource
                     ->trueLabel('Anciens employés')
                     ->falseLabel('Employés actifs')
                     ->queries(
-                        true: fn (Builder $query) => $query->whereNotNull('depart'),
-                        false: fn (Builder $query) => $query->whereNull('depart'),
+                        true: fn(Builder $query) => $query->whereNotNull('depart'),
+                        false: fn(Builder $query) => $query->whereNull('depart'),
                     ),
             ])
             ->actions([
@@ -185,14 +199,14 @@ class EmployeResource extends Resource
                 ]),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
