@@ -13,6 +13,7 @@ class CuisinierProduct extends Model
         'designation',
         'image',
         'unite',
+        'type',
         'cuisinier_category_id',
     ];
 
