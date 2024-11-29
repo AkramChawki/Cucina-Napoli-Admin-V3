@@ -22,8 +22,7 @@ class BLResource extends Resource
 
     protected static ?string $modelLabel = 'BL Economat';
 
-
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {

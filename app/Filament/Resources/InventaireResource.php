@@ -23,7 +23,7 @@ class InventaireResource extends Resource
     protected static ?string $modelLabel = 'Inventaire Interne';
 
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 9;
 
     public static function form(Form $form): Form
     {
@@ -39,9 +39,6 @@ class InventaireResource extends Resource
         ->columns([
             Tables\Columns\TextColumn::make('name')
                 ->label("Inventaiire Par :")
-                ->searchable(),
-            Tables\Columns\TextColumn::make('restau')
-                ->label("Restaurant")
                 ->searchable(),
             Tables\Columns\TextColumn::make('created_at')
                 ->label("Date d inventaire")

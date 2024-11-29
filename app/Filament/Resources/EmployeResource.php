@@ -24,7 +24,7 @@ class EmployeResource extends Resource
 
     protected static ?string $slug = 'employes';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

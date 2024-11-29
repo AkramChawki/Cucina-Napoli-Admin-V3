@@ -19,6 +19,8 @@ class MenageResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'flux de denrées';
     protected static ?string $modelLabel = 'Menage';
+    protected static ?int $navigationSort = 12;
+
 
     public static function form(Form $form): Form
     {
@@ -59,17 +61,17 @@ class MenageResource extends Resource
                     ->url(fn(Menage $record): string => "https://restaurant.cucinanapoli.com/storage/menage/$record->pdf")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
-                Action::make("voir")
-                    ->label('Voir')
-                    ->url(fn(Menage $record): string => MenageResource::getUrl("details", ["record" => $record]))
-                    ->icon('heroicon-o-eye'),
-                    Tables\Actions\DeleteAction::make()
-                    ->after(function (Menage $record) {
-                        $filesToDelete = array_filter([$record->pdf]);
-                        if (!empty($filesToDelete)) {
-                            Storage::disk('public')->delete($filesToDelete);
-                        }
-                    }),
+                // Action::make("voir")
+                //     ->label('Voir')
+                //     ->url(fn(Menage $record): string => MenageResource::getUrl("details", ["record" => $record]))
+                //     ->icon('heroicon-o-eye'),
+                //     Tables\Actions\DeleteAction::make()
+                //     ->after(function (Menage $record) {
+                //         $filesToDelete = array_filter([$record->pdf]);
+                //         if (!empty($filesToDelete)) {
+                //             Storage::disk('public')->delete($filesToDelete);
+                //         }
+                //     }),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make()

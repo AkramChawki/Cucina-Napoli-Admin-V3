@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\Storage;
 class LaboResource extends Resource
 {
     protected static ?string $model = Labo::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'flux de denrées';
     protected static ?string $modelLabel = 'Labo';
+    protected static ?int $navigationSort = 10;
+
 
     public static function form(Form $form): Form
     {
@@ -42,9 +43,6 @@ class LaboResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label("Commande Par :")
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('restau')
-                    ->label("Restaurant")
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label("Date de Commande")

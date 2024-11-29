@@ -21,7 +21,7 @@ class RestaurantResource extends Resource
 
     protected static ?string $navigationGroup = 'flux de denrées';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 13;
 
     public static function form(Form $form): Form
     {

@@ -17,7 +17,7 @@ class ReclamationResource extends Resource
 
     protected static ?string $navigationGroup = 'Gestion Restaurant';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

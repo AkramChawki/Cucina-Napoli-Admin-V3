@@ -45,6 +45,7 @@ class CuisinierProductResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('type')
+                    ->label("Charge de livraison")
                     ->options(config("livraison"))
                     ->required(),
             ]);

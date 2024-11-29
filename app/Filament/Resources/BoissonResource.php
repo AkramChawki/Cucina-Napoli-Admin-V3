@@ -21,6 +21,8 @@ class BoissonResource extends Resource
 
     protected static ?string $navigationGroup = 'flux de denrées';
     protected static ?string $modelLabel = 'Boisson';
+    protected static ?int $navigationSort = 3;
+
 
     public static function form(Form $form): Form
     {
@@ -61,17 +63,17 @@ class BoissonResource extends Resource
                 ->url(fn(Boisson $record): string => "https://restaurant.cucinanapoli.com/storage/boisson/$record->pdf")
                 ->openUrlInNewTab()
                 ->icon('heroicon-o-document'),
-            Action::make("voir")
-                ->label('Voir')
-                ->url(fn(Boisson $record): string => BoissonResource::getUrl("details", ["record" => $record]))
-                ->icon('heroicon-o-eye'),
-                Tables\Actions\DeleteAction::make()
-                ->after(function (Boisson $record) {
-                    $filesToDelete = array_filter([$record->pdf]);
-                    if (!empty($filesToDelete)) {
-                        Storage::disk('public')->delete($filesToDelete);
-                    }
-                }),
+            // Action::make("voir")
+            //     ->label('Voir')
+            //     ->url(fn(Boisson $record): string => BoissonResource::getUrl("details", ["record" => $record]))
+            //     ->icon('heroicon-o-eye'),
+            //     Tables\Actions\DeleteAction::make()
+            //     ->after(function (Boisson $record) {
+            //         $filesToDelete = array_filter([$record->pdf]);
+            //         if (!empty($filesToDelete)) {
+            //             Storage::disk('public')->delete($filesToDelete);
+            //         }
+            //     }),
         ])
         ->bulkActions([
             Tables\Actions\DeleteBulkAction::make()
