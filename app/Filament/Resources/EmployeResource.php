@@ -22,7 +22,7 @@ class EmployeResource extends Resource
 
     protected static ?string $navigationGroup = 'CRM';
 
-    protected static ?string $modelLabel = 'Comptes';
+    protected static ?string $modelLabel = 'Employe';
 
     protected static ?int $navigationSort = 1;
 
