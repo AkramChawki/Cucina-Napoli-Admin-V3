@@ -45,7 +45,6 @@ class CuisinierProductResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('type')
-                    ->multiple()
                     ->options(config("livraison"))
                     ->required(),
             ]);
