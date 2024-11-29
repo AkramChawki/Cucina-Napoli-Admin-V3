@@ -103,19 +103,19 @@ class EmployeResource extends Resource
                             ->label('Photo de profil')
                             ->image()
                             ->imageEditor()
-                            ->directory('profile-photos')
+                            ->directory('https://restaurant.cucinanapoli.com/public/storage/profile-photos')
                             ->maxSize(10240)
                             ->nullable(),
                         Forms\Components\FileUpload::make('id_card_front')
                             ->label('CIN Recto')
                             ->image()
-                            ->directory('id-cards')
+                            ->directory('https://restaurant.cucinanapoli.com/public/storage/id-cards')
                             ->required()
                             ->maxSize(10240),
                         Forms\Components\FileUpload::make('id_card_back')
                             ->label('CIN Verso')
                             ->image()
-                            ->directory('id-cards')
+                            ->directory('https://restaurant.cucinanapoli.com/public/storage/id-cards')
                             ->required()
                             ->maxSize(10240),
                     ])->columns(2),
