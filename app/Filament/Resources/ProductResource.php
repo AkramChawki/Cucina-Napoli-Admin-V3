@@ -22,7 +22,7 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Tools';
+    protected static ?string $navigationGroup = 'Gestion Restaurant';
 
     protected static ?int $navigationSort = 2;
 
