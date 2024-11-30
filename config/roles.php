@@ -8,6 +8,7 @@ return [
     "Numero" => "Numero",
     "Restaurant" => "Restaurant",
     "BL" => "BL",
+    "BL Economat" => "BL Economat",
     "Audit" => "Audit",
     "Labo" => "Labo",
     "To Go" => "To Go",
