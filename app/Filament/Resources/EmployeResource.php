@@ -20,7 +20,7 @@ class EmployeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'CRM';
+    protected static ?string $navigationGroup = 'RH';
 
     protected static ?string $modelLabel = 'Employe';
 

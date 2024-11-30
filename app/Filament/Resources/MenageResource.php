@@ -17,7 +17,9 @@ class MenageResource extends Resource
 {
     protected static ?string $model = Menage::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'flux de denrées';
+
+    protected static ?string $navigationGroup = 'hygien';
+
     protected static ?string $modelLabel = 'Menage';
     protected static ?int $navigationSort = 12;
 

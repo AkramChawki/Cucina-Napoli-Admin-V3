@@ -16,7 +16,7 @@ class RubriqueResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'flux de denrées';
+    protected static ?string $navigationGroup = 'Tools';
 
     protected static ?int $navigationSort = 14;
 

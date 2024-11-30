@@ -18,9 +18,9 @@ class InventaireResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'flux de denrées';
+    protected static ?string $navigationGroup = 'Economat';
 
-    protected static ?string $modelLabel = 'Inventaire Interne';
+    protected static ?string $modelLabel = 'Inventaire Economat';
 
 
     protected static ?int $navigationSort = 9;

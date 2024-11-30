@@ -18,7 +18,7 @@ class BLResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'flux de denrées';
+    protected static ?string $navigationGroup = 'Economat';
 
     protected static ?string $modelLabel = 'BL Economat';
 
@@ -37,13 +37,13 @@ class BLResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label("Inventaiire Par :")
+                    ->label("Commande Par :")
                     ->searchable(),
                 Tables\Columns\TextColumn::make('restau')
                     ->label("Restaurant")
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label("Date d inventaire")
+                    ->label("Date de Commande")
                     ->date(),
             ])
             ->defaultSort('created_at', 'desc')
