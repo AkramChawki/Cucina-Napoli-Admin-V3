@@ -85,10 +85,10 @@ class EmployeResource extends Resource
                             ->unique(ignoreRecord: true)
                             ->suffixIcon('heroicon-m-at-symbol')
                             ->suffix('@cucinanapoli.com'),
-                        Forms\Components\TextInput::make('restau')
+                        Forms\Components\Select::make('restau')
                             ->label('Restaurant')
                             ->required()
-                            ->maxLength(255),
+                            ->options(config("restaurants")),
                         Forms\Components\DatePicker::make('embauche')
                             ->label('Date d\'embauche')
                             ->required(),
