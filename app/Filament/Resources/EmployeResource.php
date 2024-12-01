@@ -160,7 +160,7 @@ class EmployeResource extends Resource
                     ->label('PDF')
                     ->icon('heroicon-o-document')
                     ->color('success')
-                    ->url(fn(Employe $record) => config('app.restaurant_url') . '/public/storage/' . $record->pdf, true)
+                    ->url(fn(Employe $record) => 'https://restaurant.cucinanapoli.com/public/storage/' . $record->pdf, true)
                     ->visible(fn(Employe $record) => $record->pdf !== null)
                     ->openUrlInNewTab(),
                 Tables\Actions\Action::make('createAccount')
