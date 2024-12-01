@@ -5,8 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EmployeResource\Pages;
 use App\Filament\Resources\EmployeResource\RelationManagers;
 use App\Models\Employe;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
@@ -186,9 +188,41 @@ class EmployeResource extends Resource
                     ->label('PDF')
                     ->icon('heroicon-o-document')
                     ->color('success')
-                    ->url(fn (Employe $record) => config('app.restaurant_url') . '/public/storage/' . $record->pdf, true)
-                    ->visible(fn (Employe $record) => $record->pdf !== null)
+                    ->url(fn(Employe $record) => config('app.restaurant_url') . '/public/storage/' . $record->pdf, true)
+                    ->visible(fn(Employe $record) => $record->pdf !== null)
                     ->openUrlInNewTab(),
+                Tables\Actions\Action::make('createAccount')
+                    ->label('Créer Compte')
+                    ->icon('heroicon-o-user-plus')
+                    ->color('warning')
+                    ->action(function (Employe $record) {
+                        // Check if account already exists
+                        $username = strtolower(substr($record->last_name, 0, 1) . $record->first_name);
+                        $email = $username . '@cucinanapoli.com';
+
+                        if (User::where('email', $email)->exists()) {
+                            Notification::make()
+                                ->warning()
+                                ->title('Compte existe déjà')
+                                ->body('Un compte avec cet email existe déjà.')
+                                ->send();
+                            return;
+                        }
+                        User::create([
+                            'name' => $username,
+                            'email' => $email,
+                            'password' => bcrypt($record->telephone),
+                        ]);
+                        Notification::make()
+                            ->success()
+                            ->title('Compte créé')
+                            ->body('Le compte a été créé avec succès.')
+                            ->send();
+                    })
+                    ->visible(function (Employe $record) {
+                        $email = strtolower(substr($record->last_name, 0, 1) . $record->first_name) . '@cucinanapoli.com';
+                        return !User::where('email', $email)->exists();
+                    }),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
