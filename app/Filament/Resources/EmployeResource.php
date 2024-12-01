@@ -106,25 +106,52 @@ class EmployeResource extends Resource
                             ->image()
                             ->imageEditor()
                             ->disk('restaurant')
-                            ->directory('storage/profile-photos')
+                            ->directory('profile-photos')
+                            ->visibility('public')
                             ->maxSize(10240)
-                            ->nullable(),
+                            ->nullable()
+                            ->getUploadedFileNameForStorageUsing(
+                                fn($file): string => (string) str($file->getClientOriginalName())
+                                    ->prepend(now()->timestamp . '_')
+                            )
+                            ->url(
+                                fn($record, $state): ?string =>
+                                $state ? config('app.restaurant_url') . '/storage/' . $state : null
+                            ),
 
                         Forms\Components\FileUpload::make('id_card_front')
                             ->label('CIN Recto')
                             ->image()
                             ->disk('restaurant')
-                            ->directory('storage/id-cards')
+                            ->directory('id-cards')
+                            ->visibility('public')
                             ->required()
-                            ->maxSize(10240),
+                            ->maxSize(10240)
+                            ->getUploadedFileNameForStorageUsing(
+                                fn($file): string => (string) str($file->getClientOriginalName())
+                                    ->prepend(now()->timestamp . '_')
+                            )
+                            ->url(
+                                fn($record, $state): ?string =>
+                                $state ? config('app.restaurant_url') . '/storage/' . $state : null
+                            ),
 
                         Forms\Components\FileUpload::make('id_card_back')
                             ->label('CIN Verso')
                             ->image()
                             ->disk('restaurant')
-                            ->directory('storage/id-cards')
+                            ->directory('id-cards')
+                            ->visibility('public')
                             ->required()
-                            ->maxSize(10240),
+                            ->maxSize(10240)
+                            ->getUploadedFileNameForStorageUsing(
+                                fn($file): string => (string) str($file->getClientOriginalName())
+                                    ->prepend(now()->timestamp . '_')
+                            )
+                            ->url(
+                                fn($record, $state): ?string =>
+                                $state ? config('app.restaurant_url') . '/storage/' . $state : null
+                            ),
                     ])->columns(2),
             ]);
     }

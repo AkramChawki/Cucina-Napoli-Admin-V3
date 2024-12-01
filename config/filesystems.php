@@ -60,6 +60,7 @@ return [
             'root' => public_path(),
             'url' => 'https://restaurant.cucinanapoli.com/public/storage',
             'visibility' => 'public',
+            'throw' => false,
         ],
 
     ],
