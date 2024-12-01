@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Forms\Components\CrossDomainFileUpload;
 use App\Filament\Resources\EmployeResource\Pages;
 use App\Filament\Resources\EmployeResource\RelationManagers;
 use App\Models\Employe;
@@ -102,31 +101,25 @@ class EmployeResource extends Resource
 
                 Forms\Components\Section::make('Documents')
                     ->schema([
-                        CrossDomainFileUpload::make('profile_photo')
+                        Forms\Components\FileUpload::make('profile_photo')
                             ->label('Photo de profil')
                             ->image()
                             ->imageEditor()
-                            ->disk('restaurant')
                             ->directory('profile-photos')
-                            ->visibility('public')
                             ->maxSize(10240)
                             ->nullable(),
 
-                        CrossDomainFileUpload::make('id_card_front')
+                        Forms\Components\FileUpload::make('id_card_front')
                             ->label('CIN Recto')
                             ->image()
-                            ->disk('restaurant')
                             ->directory('id-cards')
-                            ->visibility('public')
                             ->required()
                             ->maxSize(10240),
 
-                        CrossDomainFileUpload::make('id_card_back')
+                        Forms\Components\FileUpload::make('id_card_back')
                             ->label('CIN Verso')
                             ->image()
-                            ->disk('restaurant')
                             ->directory('id-cards')
-                            ->visibility('public')
                             ->required()
                             ->maxSize(10240),
                     ])->columns(2),
