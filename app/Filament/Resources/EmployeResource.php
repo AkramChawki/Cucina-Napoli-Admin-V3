@@ -99,7 +99,7 @@ class EmployeResource extends Resource
                             ->nullable(),
                     ])->columns(2),
 
-                Forms\Components\Section::make('Documents')
+                    Forms\Components\Section::make('Documents')
                     ->schema([
                         Forms\Components\FileUpload::make('profile_photo')
                             ->label('Photo de profil')
@@ -110,14 +110,7 @@ class EmployeResource extends Resource
                             ->visibility('public')
                             ->maxSize(10240)
                             ->nullable()
-                            ->getUploadedFileNameForStorageUsing(
-                                fn($file): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(now()->timestamp . '_')
-                            )
-                            ->url(
-                                fn($record, $state): ?string =>
-                                $state ? config('app.restaurant_url') . '/storage/' . $state : null
-                            ),
+                            ->urlPrefix(config('app.restaurant_url') . '/storage'),
 
                         Forms\Components\FileUpload::make('id_card_front')
                             ->label('CIN Recto')
@@ -127,14 +120,7 @@ class EmployeResource extends Resource
                             ->visibility('public')
                             ->required()
                             ->maxSize(10240)
-                            ->getUploadedFileNameForStorageUsing(
-                                fn($file): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(now()->timestamp . '_')
-                            )
-                            ->url(
-                                fn($record, $state): ?string =>
-                                $state ? config('app.restaurant_url') . '/storage/' . $state : null
-                            ),
+                            ->urlPrefix(config('app.restaurant_url') . '/storage'),
 
                         Forms\Components\FileUpload::make('id_card_back')
                             ->label('CIN Verso')
@@ -144,14 +130,7 @@ class EmployeResource extends Resource
                             ->visibility('public')
                             ->required()
                             ->maxSize(10240)
-                            ->getUploadedFileNameForStorageUsing(
-                                fn($file): string => (string) str($file->getClientOriginalName())
-                                    ->prepend(now()->timestamp . '_')
-                            )
-                            ->url(
-                                fn($record, $state): ?string =>
-                                $state ? config('app.restaurant_url') . '/storage/' . $state : null
-                            ),
+                            ->urlPrefix(config('app.restaurant_url') . '/storage'),
                     ])->columns(2),
             ]);
     }
