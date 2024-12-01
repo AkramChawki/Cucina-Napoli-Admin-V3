@@ -98,31 +98,6 @@ class EmployeResource extends Resource
                             ->label('Date de départ')
                             ->nullable(),
                     ])->columns(2),
-
-                Forms\Components\Section::make('Documents')
-                    ->schema([
-                        Forms\Components\FileUpload::make('profile_photo')
-                            ->label('Photo de profil')
-                            ->image()
-                            ->imageEditor()
-                            ->directory('profile-photos')
-                            ->maxSize(10240)
-                            ->nullable(),
-
-                        Forms\Components\FileUpload::make('id_card_front')
-                            ->label('CIN Recto')
-                            ->image()
-                            ->directory('id-cards')
-                            ->required()
-                            ->maxSize(10240),
-
-                        Forms\Components\FileUpload::make('id_card_back')
-                            ->label('CIN Verso')
-                            ->image()
-                            ->directory('id-cards')
-                            ->required()
-                            ->maxSize(10240),
-                    ])->columns(2),
             ]);
     }
 
