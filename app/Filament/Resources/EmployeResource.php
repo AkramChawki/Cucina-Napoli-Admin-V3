@@ -182,6 +182,13 @@ class EmployeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('pdf')
+                    ->label('PDF')
+                    ->icon('heroicon-o-document')
+                    ->color('success')
+                    ->url(fn (Employe $record) => config('app.restaurant_url') . '/public/storage/' . $record->pdf, true)
+                    ->visible(fn (Employe $record) => $record->pdf !== null)
+                    ->openUrlInNewTab(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

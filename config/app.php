@@ -187,4 +187,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'restaurant_url' => env('RESTAURANT_URL', 'https://restaurant.cucinanapoli.com'),
 ];
