@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Forms\Components\CrossDomainFileUpload;
 use App\Filament\Resources\EmployeResource\Pages;
 use App\Filament\Resources\EmployeResource\RelationManagers;
 use App\Models\Employe;
@@ -99,9 +100,9 @@ class EmployeResource extends Resource
                             ->nullable(),
                     ])->columns(2),
 
-                    Forms\Components\Section::make('Documents')
+                Forms\Components\Section::make('Documents')
                     ->schema([
-                        Forms\Components\FileUpload::make('profile_photo')
+                        CrossDomainFileUpload::make('profile_photo')
                             ->label('Photo de profil')
                             ->image()
                             ->imageEditor()
@@ -109,28 +110,25 @@ class EmployeResource extends Resource
                             ->directory('profile-photos')
                             ->visibility('public')
                             ->maxSize(10240)
-                            ->nullable()
-                            ->urlPrefix(config('app.restaurant_url') . '/storage'),
+                            ->nullable(),
 
-                        Forms\Components\FileUpload::make('id_card_front')
+                        CrossDomainFileUpload::make('id_card_front')
                             ->label('CIN Recto')
                             ->image()
                             ->disk('restaurant')
                             ->directory('id-cards')
                             ->visibility('public')
                             ->required()
-                            ->maxSize(10240)
-                            ->urlPrefix(config('app.restaurant_url') . '/storage'),
+                            ->maxSize(10240),
 
-                        Forms\Components\FileUpload::make('id_card_back')
+                        CrossDomainFileUpload::make('id_card_back')
                             ->label('CIN Verso')
                             ->image()
                             ->disk('restaurant')
                             ->directory('id-cards')
                             ->visibility('public')
                             ->required()
-                            ->maxSize(10240)
-                            ->urlPrefix(config('app.restaurant_url') . '/storage'),
+                            ->maxSize(10240),
                     ])->columns(2),
             ]);
     }
