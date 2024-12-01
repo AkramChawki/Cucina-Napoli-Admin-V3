@@ -23,12 +23,12 @@ class ViewAttendance extends Page
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $this->record->month, $this->record->year);
         
         $statusColors = [
-            'present' => 'rgb(34 197 94)', // green-500
-            'absent' => 'rgb(239 68 68)', // red-500
-            'conge-paye' => 'rgb(59 130 246)', // blue-500
-            'conge-non-paye' => 'rgb(249 115 22)', // orange-500
-            'repos' => 'rgb(107 114 128)', // gray-500
-            'continue' => 'rgb(234 179 8)', // yellow-500
+            'present' => '#22c55e',
+            'absent' => '#ef4444',
+            'conge-paye' => '#3b82f6',
+            'conge-non-paye' => '#f97316',
+            'repos' => '#6b7280',
+            'continue' => '#eab308',
         ];
 
         $statusLabels = [
@@ -40,16 +40,19 @@ class ViewAttendance extends Page
             'continue' => 'CC',
         ];
 
+        // Convert string keys to integers if needed
+        $attendanceData = is_array($this->record->attendance_data) 
+            ? collect($this->record->attendance_data)->mapWithKeys(function ($value, $key) {
+                return [(int)$key => $value];
+            })->toArray()
+            : [];
+
         return [
             'presence' => $this->record,
             'daysInMonth' => $daysInMonth,
             'statusColors' => $statusColors,
             'statusLabels' => $statusLabels,
+            'attendanceData' => $attendanceData,
         ];
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [];
     }
 }
