@@ -14,8 +14,6 @@ class ViewAttendance extends Page
 
     protected static string $view = 'filament.pages.presence-attendance';
 
-    public $record;
-
     public function mount($record): void
     {
         $this->record = $this->resolveRecord($record);
