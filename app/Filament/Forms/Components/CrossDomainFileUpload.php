@@ -12,7 +12,7 @@ class CrossDomainFileUpload extends FileUpload
             return null;
         }
 
-        return config('app.restaurant_url') . '/storage/' . $state;
+        return config('app.restaurant_url') . '/public/storage/' . $state;
     }
 
     protected function getImageUrl(?string $state = null): ?string
