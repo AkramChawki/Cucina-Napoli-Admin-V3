@@ -4,9 +4,12 @@ namespace App\Filament\Resources\PresenceResource\Pages;
 
 use App\Filament\Resources\PresenceResource;
 use Filament\Resources\Pages\Page;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 
 class ViewAttendance extends Page
 {
+    use InteractsWithRecord;
+
     protected static string $resource = PresenceResource::class;
 
     protected static string $view = 'filament.pages.presence-attendance';
@@ -40,19 +43,11 @@ class ViewAttendance extends Page
             'continue' => 'CC',
         ];
 
-        // Convert string keys to integers if needed
-        $attendanceData = is_array($this->record->attendance_data) 
-            ? collect($this->record->attendance_data)->mapWithKeys(function ($value, $key) {
-                return [(int)$key => $value];
-            })->toArray()
-            : [];
-
         return [
             'presence' => $this->record,
             'daysInMonth' => $daysInMonth,
             'statusColors' => $statusColors,
             'statusLabels' => $statusLabels,
-            'attendanceData' => $attendanceData,
         ];
     }
 }
