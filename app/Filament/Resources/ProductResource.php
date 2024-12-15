@@ -24,6 +24,9 @@ class ProductResource extends Resource
 
     protected static ?string $navigationGroup = 'Gestion Site En Ligne';
 
+    protected static ?string $modelLabel = 'Produits';
+
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
