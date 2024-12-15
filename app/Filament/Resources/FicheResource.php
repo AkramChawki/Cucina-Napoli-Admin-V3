@@ -8,10 +8,13 @@ use App\Models\Fiche;
 use App\Models\Rubrique;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Support\Facades\DB;
+use Filament\Tables\Actions\Action;
+use Illuminate\Database\Query\Builder;
 
 class FicheResource extends Resource
 {
@@ -30,7 +33,7 @@ class FicheResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\Select::make('rubrique_id')
+                Forms\Components\Select::make('rubrique_id')
                     ->options(Rubrique::all()->pluck("title", "id")),
             ]);
     }
@@ -57,7 +60,7 @@ class FicheResource extends Resource
                     ]))
                     ->action(function (Fiche $record, array $data): void {
                         foreach ($data["cuisinier_product_ids"] as $product_id) {
-                            DB::insert('insert into fiche_cuisinier_product (cuisinier_product_id, 	fiche_id) values (?, ?)', [$product_id, $record->id]);
+                            DB::insert('insert into fiche_cuisinier_product (cuisinier_product_id, fiche_id) values (?, ?)', [$product_id, $record->id]);
                         }
                     })
                     ->form([
@@ -73,6 +76,39 @@ class FicheResource extends Resource
                             ->required()
                             ->disabled(),
                     ]),
+                Action::make('gerer_produits')
+                    ->label('Gérer Produits')
+                    ->icon('heroicon-o-clipboard-list')
+                    ->modalHeading('Gérer les produits de la fiche')
+                    ->mountUsing(fn (Forms\ComponentContainer $form, Fiche $record) => $form->fill([
+                        'fiche_id' => $record->id,
+                    ]))
+                    ->form([
+                        Forms\Components\Select::make('products_to_remove')
+                            ->label('Sélectionner les produits à supprimer')
+                            ->multiple()
+                            ->options(function (Fiche $record) {
+                                return DB::table('cuisinier_products')
+                                    ->join('fiche_cuisinier_product', 'cuisinier_products.id', '=', 'fiche_cuisinier_product.cuisinier_product_id')
+                                    ->where('fiche_cuisinier_product.fiche_id', $record->id)
+                                    ->pluck('cuisinier_products.designation', 'cuisinier_products.id');
+                            })
+                            ->searchable(),
+                    ])
+                    ->action(function (Fiche $record, array $data): void {
+                        if (!empty($data['products_to_remove'])) {
+                            DB::table('fiche_cuisinier_product')
+                                ->where('fiche_id', $record->id)
+                                ->whereIn('cuisinier_product_id', $data['products_to_remove'])
+                                ->delete();
+                        }
+                    })
+                    ->successNotification(
+                        Notification::make()
+                             ->success()
+                             ->title('Suppression Produit')
+                             ->body('Produits supprimés avec succès'),
+                    ),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
