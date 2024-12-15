@@ -18,7 +18,7 @@ class InventaireResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Flux Restaurant';
+    protected static ?string $navigationGroup = 'Controle De Gestion';
 
     protected static ?string $modelLabel = 'Inventaire Economat';
 
