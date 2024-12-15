@@ -124,7 +124,8 @@ class BoissonResource extends Resource
             $user->email == "nyoussef@cucinanapoli.com" ||
             $user->email == "oilham@cucinanapoli.com" ||
             $user->email == "dmeriem@cucinanapoli.com" ||
-            $user->email == "afatima@cucinanapoli.com"
+            $user->email == "afatima@cucinanapoli.com" ||
+            $user->email == "basmaa@cucinanapoli.com"
         );
     }
 }

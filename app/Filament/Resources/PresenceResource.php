@@ -128,4 +128,14 @@ class PresenceResource extends Resource
             ->whereYear('created_at', now()->year)
             ->count();
     }
+
+    public static function shouldRegisterNavigation(): bool
+{
+    $user = auth()->user();
+    return $user && (
+        $user->email == "admin@cucinanapoli.com" ||
+        $user->email == "nimane@cucinanapoli.com" ||
+        $user->email == "nyoussef@cucinanapoli.com"
+    );
+}
 }

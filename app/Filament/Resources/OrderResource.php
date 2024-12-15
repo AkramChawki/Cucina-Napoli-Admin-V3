@@ -133,7 +133,8 @@ class OrderResource extends Resource
         $user->email == "afatima@cucinanapoli.com" ||
         $user->email == "dmeriem@cucinanapoli.com" ||
         $user->email == "palmier@cucinanapoli.com" ||
-        $user->email == "anoual@cucinanapoli.com" 
+        $user->email == "anoual@cucinanapoli.com" ||
+            $user->email == "basmaa@cucinanapoli.com"
     );
 }
 }
