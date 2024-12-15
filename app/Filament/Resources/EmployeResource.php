@@ -171,7 +171,6 @@ class EmployeResource extends Resource
                         // Check if account already exists
                         $username = strtolower(substr($record->last_name, 0, 1) . $record->first_name);
                         $email = $username . '@cucinanapoli.com';
-
                         if (User::where('email', $email)->exists()) {
                             Notification::make()
                                 ->warning()
@@ -184,6 +183,7 @@ class EmployeResource extends Resource
                             'name' => $username,
                             'email' => $email,
                             'password' => bcrypt($record->telephone),
+                            'employe_id' => $record->id  // Added this line to link to employee
                         ]);
                         Notification::make()
                             ->success()
