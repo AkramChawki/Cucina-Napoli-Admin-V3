@@ -12,6 +12,5 @@ return [
     "Audit" => "Audit",
     "Labo" => "Labo",
     "To Go" => "To Go",
-    "Menage" => "Menage",
     "Boissons" => "Boissons",
 ];
