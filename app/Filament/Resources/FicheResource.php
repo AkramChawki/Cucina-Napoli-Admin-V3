@@ -78,7 +78,7 @@ class FicheResource extends Resource
                     ]),
                 Action::make('gerer_produits')
                     ->label('Gérer Produits')
-                    ->icon('heroicon-o-clipboard-list')
+                    ->icon('heroicon-o-clipboard')
                     ->modalHeading('Gérer les produits de la fiche')
                     ->mountUsing(fn (Forms\ComponentContainer $form, Fiche $record) => $form->fill([
                         'fiche_id' => $record->id,
@@ -106,7 +106,7 @@ class FicheResource extends Resource
                     ->successNotification(
                         Notification::make()
                              ->success()
-                             ->title('Suppression Produit')
+                             ->title('Suppression')
                              ->body('Produits supprimés avec succès'),
                     ),
                 Tables\Actions\EditAction::make(),
