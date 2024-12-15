@@ -43,8 +43,8 @@ class CuisinierProductResource extends Resource
                 Forms\Components\TextInput::make('unite')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('type')
-                    ->label("Charge de livraison")
+                    Forms\Components\Select::make('type')
+                    ->label("Type de BL")
                     ->options(config("livraison"))
                     ->required(),
             ]);
