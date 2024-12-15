@@ -20,7 +20,7 @@ class BLResource extends Resource
 
     protected static ?string $navigationGroup = 'Economat';
 
-    protected static ?string $modelLabel = 'BL Economat';
+    protected static ?string $modelLabel = 'Flux Restaurant';
 
     protected static ?int $navigationSort = 2;
 
