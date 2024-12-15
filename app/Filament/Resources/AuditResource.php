@@ -18,7 +18,7 @@ class AuditResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Hygien';
+    protected static ?string $navigationGroup = 'Controle De Gestion';
 
     protected static ?string $modelLabel = 'Audit Hygien';
 

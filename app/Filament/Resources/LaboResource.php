@@ -17,7 +17,7 @@ class LaboResource extends Resource
 {
     protected static ?string $model = Labo::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Economat';
+    protected static ?string $navigationGroup = 'Commande';
     protected static ?string $modelLabel = 'Commande labo';
     protected static ?int $navigationSort = 10;
 

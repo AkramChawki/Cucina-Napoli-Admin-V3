@@ -16,7 +16,7 @@ class LivraisonResource extends Resource
 {
     protected static ?string $model = Livraison::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Flux Restaurant';
+    protected static ?string $navigationGroup = 'Commande';
     protected static ?string $modelLabel = 'Livraisons';
     protected static ?int $navigationSort = 11;
 

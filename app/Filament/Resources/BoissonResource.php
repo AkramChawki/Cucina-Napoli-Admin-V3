@@ -19,7 +19,7 @@ class BoissonResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Controle De Gestion';
+    protected static ?string $navigationGroup = 'Commande';
     protected static ?string $modelLabel = 'Boisson';
     protected static ?int $navigationSort = 3;
 

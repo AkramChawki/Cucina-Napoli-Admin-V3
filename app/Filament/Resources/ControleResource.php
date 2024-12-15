@@ -20,7 +20,7 @@ class ControleResource extends Resource
 
     protected static ?string $navigationGroup = 'Controle De Gestion';
 
-    protected static ?string $modelLabel = 'Etat De Stock';
+    protected static ?string $modelLabel = 'Stock Restaurant';
 
     protected static ?int $navigationSort = 4;
 

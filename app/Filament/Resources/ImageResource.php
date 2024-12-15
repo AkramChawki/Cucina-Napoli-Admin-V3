@@ -16,7 +16,7 @@ class ImageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Site';
+    protected static ?string $navigationGroup = 'Gestion Site En Ligne';
 
     protected static ?int $navigationSort = 2;
 

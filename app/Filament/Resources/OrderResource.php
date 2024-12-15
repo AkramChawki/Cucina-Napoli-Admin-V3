@@ -20,7 +20,7 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Gestion Restaurant';
+    protected static ?string $navigationGroup = 'Gestion Site En Ligne';
 
     protected static ?int $navigationSort = 3;
 
@@ -134,7 +134,7 @@ class OrderResource extends Resource
         $user->email == "dmeriem@cucinanapoli.com" ||
         $user->email == "palmier@cucinanapoli.com" ||
         $user->email == "anoual@cucinanapoli.com" ||
-            $user->email == "basmaa@cucinanapoli.com"
+        $user->email == "basmaa@cucinanapoli.com"
     );
 }
 }

@@ -17,7 +17,7 @@ class CuisinierOrderResource extends Resource
 {
     protected static ?string $model = CuisinierOrder::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Flux Restaurant';
+    protected static ?string $navigationGroup = 'Commande';
     protected static ?string $modelLabel = 'Commande Cuisinier';
 
 
