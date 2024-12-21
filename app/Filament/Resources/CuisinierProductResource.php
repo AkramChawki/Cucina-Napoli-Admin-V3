@@ -43,10 +43,16 @@ class CuisinierProductResource extends Resource
                 Forms\Components\TextInput::make('unite')
                     ->required()
                     ->maxLength(255),
-                    Forms\Components\Select::make('type')
+                Forms\Components\Select::make('type')
                     ->label("Type de BL")
                     ->options(config("livraison"))
                     ->required(),
+                Forms\Components\TextInput::make('cr')
+                    ->label('Conditionnement Requis')
+                    ->numeric()
+                    ->minValue(0)
+                    ->step(0.01)
+                    ->placeholder('Laissez vide si pas de CR'),
             ]);
     }
 
@@ -58,6 +64,9 @@ class CuisinierProductResource extends Resource
                 Tables\Columns\TextColumn::make('designation')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('unite'),
+                Tables\Columns\TextColumn::make('cr')
+                    ->label('CR')
+                    ->formatStateUsing(fn($state) => $state ? $state : '-'),
             ])
             ->filters([
                 //
