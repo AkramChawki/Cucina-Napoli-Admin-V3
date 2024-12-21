@@ -135,7 +135,8 @@ class PresenceResource extends Resource
     return $user && (
         $user->email == "admin@cucinanapoli.com" ||
         $user->email == "nimane@cucinanapoli.com" ||
-        $user->email == "nyoussef@cucinanapoli.com"
+        $user->email == "nyoussef@cucinanapoli.com" ||
+        $user->email == "basmaa@cucinanapoli.com"
     );
 }
 }

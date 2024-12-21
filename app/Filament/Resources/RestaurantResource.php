@@ -176,12 +176,7 @@ class RestaurantResource extends Resource
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
             $user->email == "nimane@cucinanapoli.com" ||
-            $user->email == "mmalika@cucinanapoli.com" ||
-            $user->email == "nyoussef@cucinanapoli.com" ||
-            $user->email == "oilham@cucinanapoli.com" ||
-            $user->email == "dmeriem@cucinanapoli.com" ||
-            $user->email == "afatima@cucinanapoli.com" ||
-        $user->email == "basmaa@cucinanapoli.com"
+            $user->email == "nyoussef@cucinanapoli.com"
         );
     }
 }

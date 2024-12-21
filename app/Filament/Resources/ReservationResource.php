@@ -103,12 +103,9 @@ class ReservationResource extends Resource
             $user->email == "nimane@cucinanapoli.com" ||
             $user->email == "palmier@cucinanapoli.com" ||
             $user->email == "anoual@cucinanapoli.com" ||
-            $user->email == "mmalika@cucinanapoli.com" ||
-            $user->email == "nyoussef@cucinanapoli.com" ||
-            $user->email == "oilham@cucinanapoli.com" ||
-            $user->email == "dmeriem@cucinanapoli.com" ||
-            $user->email == "afatima@cucinanapoli.com" ||
-        $user->email == "basmaa@cucinanapoli.com"
+            $user->email == "ziraoui@cucinanapoli.com" ||
+            $user->email == "togo@cucinanapoli.com" ||
+            $user->email == "nyoussef@cucinanapoli.com"
         );
     }
 }

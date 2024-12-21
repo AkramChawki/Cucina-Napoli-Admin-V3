@@ -16,7 +16,7 @@ class LivraisonResource extends Resource
 {
     protected static ?string $model = Livraison::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Commande';
+    protected static ?string $navigationGroup = 'Flux Restaurant';
     protected static ?string $modelLabel = 'Livraisons';
     protected static ?int $navigationSort = 11;
 
@@ -110,12 +110,7 @@ class LivraisonResource extends Resource
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
             $user->email == "nimane@cucinanapoli.com" ||
-            $user->email == "mmalika@cucinanapoli.com" ||
-            $user->email == "nyoussef@cucinanapoli.com" ||
-            $user->email == "oilham@cucinanapoli.com" ||
-            $user->email == "dmeriem@cucinanapoli.com" ||
-            $user->email == "afatima@cucinanapoli.com" ||
-            $user->email == "basmaa@cucinanapoli.com"
+            $user->email == "nyoussef@cucinanapoli.com"
         );
     }
 }
