@@ -14,6 +14,7 @@ class CuisinierProduct extends Model
         'image',
         'unite',
         'type',
+        'cr',
         'cuisinier_category_id',
     ];
 
