@@ -14,4 +14,5 @@ return [
     "To Go" => "To Go",
     "Boissons" => "Boissons",
     "PNC" => "PNC",
+    "Fiche-controle" => "Fiche-controle",
 ];
