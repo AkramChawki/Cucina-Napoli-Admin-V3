@@ -73,8 +73,7 @@ class RubriqueResource extends Resource
         $user = auth()->user();
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
-            $user->email == "nimane@cucinanapoli.com" ||
-            $user->email == "nyoussef@cucinanapoli.com"
+            $user->email == "nimane@cucinanapoli.com"
         );
     }
 }

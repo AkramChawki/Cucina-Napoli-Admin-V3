@@ -111,8 +111,7 @@ class FicheControleResource extends Resource
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
             $user->email == "nimane@cucinanapoli.com" ||
-            $user->email == "nyassin@cucinanapoli.com" ||
-            $user->email == "nyoussef@cucinanapoli.com" 
+            $user->email == "nyassin@cucinanapoli.com"
         );
     }
 }
