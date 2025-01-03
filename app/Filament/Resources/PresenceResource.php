@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PresenceResource\Pages;
+use App\Models\Employe;
 use App\Models\Presence;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -97,7 +98,7 @@ class PresenceResource extends Resource
                 SelectFilter::make('employe.restau')
                     ->label('Restaurant')
                     ->options(function () {
-                        return DB::table('employes')
+                        return Employe::query()
                             ->select('restau')
                             ->distinct()
                             ->whereNotNull('restau')
@@ -106,10 +107,15 @@ class PresenceResource extends Resource
                             ->toArray();
                     })
                     ->query(function (Builder $query, $state) {
-                        if (!empty($state)) {
-                            return $query->whereHas('employe', fn($q) => $q->where('restau', $state));
-                        }
-                        return $query;
+                        return $query->when(
+                            $state,
+                            fn($q) =>
+                            $q->whereHas(
+                                'employe',
+                                fn($subQ) =>
+                                $subQ->where('restau', $state)
+                            )
+                        );
                     }),
 
                 SelectFilter::make('employe')
