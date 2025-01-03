@@ -105,11 +105,11 @@ class PresenceResource extends Resource
                             ->pluck('restau', 'restau')
                             ->toArray();
                     })
-                    ->query(function (Builder $query, array $data) {
-                        return $query->when(
-                            $data['value'],
-                            fn(Builder $q) => $q->whereHas('employe', fn($q) => $q->where('restau', $data['value']))
-                        );
+                    ->query(function (Builder $query, $state) {
+                        if (!empty($state)) {
+                            return $query->whereHas('employe', fn($q) => $q->where('restau', $state));
+                        }
+                        return $query;
                     }),
 
                 SelectFilter::make('employe')
