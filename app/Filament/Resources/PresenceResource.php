@@ -91,7 +91,7 @@ class PresenceResource extends Resource
                     ->label('Restaurant')
                     ->options(
                         fn() => Employe::query()
-                            ->select('restau')
+                            ->select(DB::raw('TRIM(LOWER(restau)) as restau')) // Standardize values
                             ->distinct()
                             ->whereNotNull('restau')
                             ->orderBy('restau')
@@ -104,11 +104,11 @@ class PresenceResource extends Resource
                             fn($q) =>
                             $q->whereHas(
                                 'employe',
-                                fn($subQ) =>
-                                $subQ->where('restau', $state)
+                                fn($subQ) => $subQ->where(DB::raw('TRIM(LOWER(restau))'), strtolower(trim($state)))
                             )
                         );
                     }),
+
                 SelectFilter::make('month')
                     ->label('Mois')
                     ->options([
