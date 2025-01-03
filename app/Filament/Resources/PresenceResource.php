@@ -95,12 +95,14 @@ class PresenceResource extends Resource
 
                 SelectFilter::make('employe.restau')
                     ->label('Restaurant')
-                    ->relationship('employe', 'restau')
-                    ->query(function (Builder $query) {
-                        return $query->select('restau')->distinct();
-                    })
+                    ->relationship(
+                        'employe',
+                        'restau',
+                        fn(Builder $query) =>
+                        $query->select('restau')->distinct()
+                    )
                     ->preload()
-                    ->afterStateUpdated(function ($state, Builder $query) {
+                    ->query(function (Builder $query, string $state) {
                         return $query->whereHas('employe', function ($q) use ($state) {
                             $q->where('restau', $state);
                         });
