@@ -103,10 +103,10 @@ class PresenceResource extends Resource
                             ->toArray();
                     })
                     ->query(function (Builder $query, array $data) {
-                        return $query->when(
-                            $data['value'],
-                            fn(Builder $q) => $q->whereHas('employe', fn($q) => $q->where('restau', $data['value']))
-                        );
+                        if (!empty($data)) {
+                            return $query->whereHas('employe', fn($q) => $q->where('restau', $data));
+                        }
+                        return $query;
                     }),
 
                 SelectFilter::make('employe')
