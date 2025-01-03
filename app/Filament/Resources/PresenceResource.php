@@ -118,7 +118,9 @@ class PresenceResource extends Resource
                     ->icon('heroicon-o-eye')
                     ->url(fn(Presence $record) => route('filament.admin.resources.presences.view-attendance', $record))
                     ->openUrlInNewTab(),
-            ]);
+            ])
+            ->persistFilters()
+            ->persistSortInSession();
     }
 
 
