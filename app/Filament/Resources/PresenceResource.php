@@ -102,10 +102,14 @@ class PresenceResource extends Resource
                         $query->select('restau')->distinct()
                     )
                     ->preload()
-                    ->query(function (Builder $query, string $state) {
-                        return $query->whereHas('employe', function ($q) use ($state) {
-                            $q->where('restau', $state);
-                        });
+                    ->query(function (Builder $query, array $data) {
+                        $state = $data['value'] ?? null;
+                        if ($state) {
+                            return $query->whereHas('employe', function ($q) use ($state) {
+                                $q->where('restau', $state);
+                            });
+                        }
+                        return $query;
                     }),
 
                 SelectFilter::make('employe')
