@@ -25,6 +25,13 @@ class PresenceResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+    protected static array $restaurants = [
+        'anoual' => 'Anoual',
+        'palmier' => 'Palmier',
+        'ziraoui' => 'Ziraoui',
+        'togo' => 'To Go',
+    ];
+
     public static function canCreate(): bool
     {
         return false;
@@ -73,15 +80,7 @@ class PresenceResource extends Resource
             ->filters([
                 SelectFilter::make('employe.restau')
                     ->label('Restaurant')
-                    ->options(
-                        fn() => DB::table('employes')
-                            ->select('restau')
-                            ->distinct()
-                            ->whereNotNull('restau')
-                            ->orderBy('restau')
-                            ->pluck('restau', 'restau')
-                            ->toArray()
-                    )
+                    ->options(static::$restaurants)
                     ->query(function (Builder $query, $state) {
                         $query->whereHas('employe', function (Builder $q) use ($state) {
                             $q->where('restau', $state);
