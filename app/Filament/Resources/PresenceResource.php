@@ -33,14 +33,6 @@ class PresenceResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            // ->header(fn() => view('filament.resources.presence.header', [
-            //     'restaurants' => DB::table('employes')
-            //         ->select('restau')
-            //         ->distinct()
-            //         ->whereNotNull('restau')
-            //         ->orderBy('restau')
-            //         ->pluck('restau')
-            // ]))
             ->columns([
                 Tables\Columns\TextColumn::make('employe.first_name')
                     ->label('Prénom')
@@ -78,14 +70,6 @@ class PresenceResource extends Resource
                     ->label('Jours')
                     ->sortable(),
             ])
-            ->modifyQueryUsing(function (Builder $query) {
-                if (request()->query('restaurant')) {
-                    $query->whereHas('employe', function ($q) {
-                        $q->where('restau', request()->query('restaurant'));
-                    });
-                }
-                return $query;
-            })
             ->filters([
                 SelectFilter::make('employe.restau')
                     ->label('Restaurant')
@@ -99,37 +83,31 @@ class PresenceResource extends Resource
                             ->toArray()
                     )
                     ->query(function (Builder $query, $state) {
-                        return $query->when(
-                            $state,
-                            fn($q) => $q->where('employes.restau', $state) // Ensure the table name is prefixed
-                        );
+                        $query->whereHas('employe', function (Builder $q) use ($state) {
+                            $q->where('restau', $state);
+                        });
                     }),
 
-
-
-
+                // Month filter
                 SelectFilter::make('month')
-                    ->label('Mois')
-                    ->options([
-                        1 => 'Janvier',
-                        2 => 'Février',
-                        3 => 'Mars',
-                        4 => 'Avril',
-                        5 => 'Mai',
-                        6 => 'Juin',
-                        7 => 'Juillet',
-                        8 => 'Août',
-                        9 => 'Septembre',
-                        10 => 'Octobre',
-                        11 => 'Novembre',
-                        12 => 'Décembre',
-                    ]),
+                    ->label('Month')
+                    ->options(
+                        collect(range(1, 12))
+                            ->mapWithKeys(fn($month) => [$month => date('F', mktime(0, 0, 0, $month, 1))])
+                            ->toArray()
+                    ),
+
+                // Year filter
                 SelectFilter::make('year')
-                    ->label('Année')
-                    ->options(fn() => array_combine(
-                        range(date('Y') - 2, date('Y')),
-                        range(date('Y') - 2, date('Y'))
-                    )),
+                    ->label('Year')
+                    ->options(
+                        fn() => Presence::query()
+                            ->select('year')
+                            ->distinct()
+                            ->orderBy('year', 'desc')
+                            ->pluck('year', 'year')
+                            ->toArray()
+                    ),
             ])
             ->actions([
                 Tables\Actions\Action::make('view_attendance')
