@@ -119,7 +119,6 @@ class PresenceResource extends Resource
                     ->url(fn(Presence $record) => route('filament.admin.resources.presences.view-attendance', $record))
                     ->openUrlInNewTab(),
             ])
-            ->persistFilters()
             ->persistSortInSession();
     }
 
