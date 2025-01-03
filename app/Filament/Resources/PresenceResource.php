@@ -51,6 +51,11 @@ class PresenceResource extends Resource
                     ->sortable()
                     ->searchable(),
 
+                Tables\Columns\TextColumn::make('employe.restau')
+                    ->label('Restaurant')
+                    ->sortable()
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('month')
                     ->label('Mois')
                     ->formatStateUsing(fn(int $state): string => [
@@ -78,14 +83,6 @@ class PresenceResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                SelectFilter::make('employe.restau')
-                    ->label('Restaurant')
-                    ->options(static::$restaurants)
-                    ->query(function (Builder $query, $state) {
-                        $query->whereHas('employe', function (Builder $q) use ($state) {
-                            $q->where('restau', $state);
-                        });
-                    }),
                 SelectFilter::make('month')
                     ->label('Month')
                     ->options(
