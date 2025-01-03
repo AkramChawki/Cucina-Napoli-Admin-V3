@@ -33,14 +33,14 @@ class PresenceResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->header(fn() => view('filament.resources.presence.header', [
-                'restaurants' => DB::table('employes')
-                    ->select('restau')
-                    ->distinct()
-                    ->whereNotNull('restau')
-                    ->orderBy('restau')
-                    ->pluck('restau')
-            ]))
+            // ->header(fn() => view('filament.resources.presence.header', [
+            //     'restaurants' => DB::table('employes')
+            //         ->select('restau')
+            //         ->distinct()
+            //         ->whereNotNull('restau')
+            //         ->orderBy('restau')
+            //         ->pluck('restau')
+            // ]))
             ->columns([
                 Tables\Columns\TextColumn::make('employe.first_name')
                     ->label('Prénom')
@@ -87,6 +87,23 @@ class PresenceResource extends Resource
                 return $query;
             })
             ->filters([
+                SelectFilter::make('employe.restau')
+                    ->label('Restaurant')
+                    ->options(fn() => DB::table('employes')
+                        ->select('restau')
+                        ->distinct()
+                        ->whereNotNull('restau')
+                        ->orderBy('restau')
+                        ->pluck('restau', 'restau')
+                        ->toArray()
+                    )
+                    ->query(function (Builder $query, $state) {
+                        return $query->when($state, fn($q) => 
+                            $q->whereHas('employe', fn($subQ) => 
+                                $subQ->where('restau', $state)
+                            )
+                        );
+                    }),
                 SelectFilter::make('month')
                     ->label('Mois')
                     ->options([
@@ -103,14 +120,12 @@ class PresenceResource extends Resource
                         11 => 'Novembre',
                         12 => 'Décembre',
                     ]),
-
                 SelectFilter::make('year')
                     ->label('Année')
                     ->options(fn() => array_combine(
                         range(date('Y') - 2, date('Y')),
                         range(date('Y') - 2, date('Y'))
                     )),
-
             ])
             ->actions([
                 Tables\Actions\Action::make('view_attendance')
