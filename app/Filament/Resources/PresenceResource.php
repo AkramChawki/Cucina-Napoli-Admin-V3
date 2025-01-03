@@ -10,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class PresenceResource extends Resource
 {
@@ -96,9 +97,9 @@ class PresenceResource extends Resource
                 SelectFilter::make('employe.restau')
                     ->label('Restaurant')
                     ->options(function () {
-                        return Presence::join('employes', 'presences.employe_id', '=', 'employes.id')
-                            ->select('employes.restau')
+                        return DB::table('employes')
                             ->distinct()
+                            ->orderBy('restau')
                             ->pluck('restau', 'restau')
                             ->toArray();
                     })
