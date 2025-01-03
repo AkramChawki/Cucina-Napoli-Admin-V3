@@ -74,7 +74,7 @@ class PresenceResource extends Resource
                 SelectFilter::make('employe.restau')
                     ->label('Restaurant')
                     ->options(
-                        fn() => Employe::query()
+                        fn() => DB::table('employes')
                             ->select('restau')
                             ->distinct()
                             ->whereNotNull('restau')
@@ -87,8 +87,6 @@ class PresenceResource extends Resource
                             $q->where('restau', $state);
                         });
                     }),
-
-                // Month filter
                 SelectFilter::make('month')
                     ->label('Month')
                     ->options(
