@@ -87,7 +87,7 @@ class PresenceResource extends Resource
                 return $query;
             })
             ->filters([
-                SelectFilter::make('restau')
+                SelectFilter::make('employe.restau')
                     ->label('Restaurant')
                     ->options(
                         fn() => Employe::query()
@@ -101,9 +101,10 @@ class PresenceResource extends Resource
                     ->query(function (Builder $query, $state) {
                         return $query->when(
                             $state,
-                            fn($q) => $q->where('restau', $state)
+                            fn($q) => $q->where('employes.restau', $state) // Ensure the table name is prefixed
                         );
                     }),
+
 
 
 
