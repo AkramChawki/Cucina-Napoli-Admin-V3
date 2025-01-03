@@ -33,6 +33,14 @@ class PresenceResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->header(fn() => view('filament.resources.presence.header', [
+                'restaurants' => DB::table('employes')
+                    ->select('restau')
+                    ->distinct()
+                    ->whereNotNull('restau')
+                    ->orderBy('restau')
+                    ->pluck('restau')
+            ]))
             ->columns([
                 Tables\Columns\TextColumn::make('employe.first_name')
                     ->label('Prénom')
@@ -70,6 +78,16 @@ class PresenceResource extends Resource
                     ->label('Jours')
                     ->sortable(),
             ])
+            ->modifyQueryUsing(function (Builder $query) {
+                if (request()->has('restaurant')) {
+                    $query->whereHas(
+                        'employe',
+                        fn($q) =>
+                        $q->where('restau', request()->restaurant)
+                    );
+                }
+                return $query;
+            })
             ->filters([
                 SelectFilter::make('month')
                     ->label('Mois')
@@ -95,31 +113,6 @@ class PresenceResource extends Resource
                         range(date('Y') - 2, date('Y'))
                     )),
 
-                SelectFilter::make('employe.restau')
-                    ->label('Restaurant')
-                    ->options(function () {
-                        return DB::table('presences')
-                            ->join('employes', 'presences.employe_id', '=', 'employes.id')
-                            ->select('employes.restau')
-                            ->distinct()
-                            ->whereNotNull('employes.restau')
-                            ->orderBy('employes.restau')
-                            ->pluck('restau', 'restau')
-                            ->toArray();
-                    })
-                    ->multiple(false)
-                    ->query(function (Builder $query, $state): Builder {
-                        if (!empty($state)) {
-                            return $query->whereRelation('employe', 'restau', $state);
-                        }
-                        return $query;
-                    }),
-
-                SelectFilter::make('employe')
-                    ->relationship('employe', 'first_name')
-                    ->label('Employé')
-                    ->searchable()
-                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\Action::make('view_attendance')
