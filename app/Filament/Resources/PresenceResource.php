@@ -79,7 +79,7 @@ class PresenceResource extends Resource
                     ->sortable(),
             ])
             ->modifyQueryUsing(function (Builder $query) {
-                if (request()->has('restaurant')) {
+                if (request()->restaurant) {
                     $query->whereHas(
                         'employe',
                         fn($q) =>
