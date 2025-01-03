@@ -96,7 +96,15 @@ class PresenceResource extends Resource
                 SelectFilter::make('employe.restau')
                     ->label('Restaurant')
                     ->relationship('employe', 'restau')
-                    ->preload(),
+                    ->query(function (Builder $query) {
+                        return $query->select('restau')->distinct();
+                    })
+                    ->preload()
+                    ->afterStateUpdated(function ($state, Builder $query) {
+                        return $query->whereHas('employe', function ($q) use ($state) {
+                            $q->where('restau', $state);
+                        });
+                    }),
 
                 SelectFilter::make('employe')
                     ->relationship('employe', 'first_name')
@@ -130,13 +138,13 @@ class PresenceResource extends Resource
     }
 
     public static function shouldRegisterNavigation(): bool
-{
-    $user = auth()->user();
-    return $user && (
-        $user->email == "admin@cucinanapoli.com" ||
-        $user->email == "nimane@cucinanapoli.com" ||
-        $user->email == "basmaa@cucinanapoli.com" ||
-        $user->email == "btayeb@cucinanapoli.com"
-    );
-}
+    {
+        $user = auth()->user();
+        return $user && (
+            $user->email == "admin@cucinanapoli.com" ||
+            $user->email == "nimane@cucinanapoli.com" ||
+            $user->email == "basmaa@cucinanapoli.com" ||
+            $user->email == "btayeb@cucinanapoli.com"
+        );
+    }
 }
