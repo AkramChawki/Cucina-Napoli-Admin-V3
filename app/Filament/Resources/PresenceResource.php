@@ -3,15 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PresenceResource\Pages;
-use App\Models\Employe;
 use App\Models\Presence;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+
 
 class PresenceResource extends Resource
 {
@@ -109,6 +107,9 @@ class PresenceResource extends Resource
                     ->icon('heroicon-o-eye')
                     ->url(fn(Presence $record) => route('filament.admin.resources.presences.view-attendance', $record))
                     ->openUrlInNewTab(),
+            ])
+            ->bulkActions([
+                ExportBulkAction::make()
             ])
             ->persistSortInSession();
     }
