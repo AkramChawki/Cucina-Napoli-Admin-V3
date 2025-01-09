@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string("image");
             $table->string("unite");
             $table->string("type");
+            $table->float("cr");
+            $table->float("prix");
             $table->foreignId('cuisinier_category_id')
                 ->constrained()
                 ->onDelete('cascade');
