@@ -41,7 +41,8 @@ class ClotureCaisseStatsOverview extends BaseWidget
                     $this->record->erreurPizza +
                     $this->record->erreurCuisine +
                     $this->record->erreurServeur +
-                    $this->record->erreurCaisse, 2
+                    $this->record->erreurCaisse +
+                    $this->record->perteEmporte, 2
                 ) . ' MAD')
                 ->description('Total des erreurs')
                 ->descriptionIcon('heroicon-s-exclamation-triangle')

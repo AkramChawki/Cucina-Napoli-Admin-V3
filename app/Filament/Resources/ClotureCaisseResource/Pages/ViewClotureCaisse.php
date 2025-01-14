@@ -117,6 +117,9 @@ class ViewClotureCaisse extends ViewRecord
                                 TextEntry::make('erreurCaisse')
                                     ->label('Erreur Caisse')
                                     ->money('mad'),
+                                TextEntry::make('perteEmporte')
+                                    ->label('Perte Emporte')
+                                    ->money('mad'),
                                 TextEntry::make('giveawayPizza')
                                     ->money('mad'),
                                 TextEntry::make('giveawayPasta')

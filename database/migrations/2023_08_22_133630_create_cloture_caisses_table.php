@@ -30,6 +30,7 @@ return new class extends Migration
             $table->float("erreurCuisine");
             $table->float("erreurServeur");
             $table->float("erreurCaisse");
+            $table->float("perteEmporte");
             $table->float("giveawayPizza");
             $table->float("giveawayPasta");
             $table->float("glovoC");
@@ -38,7 +39,6 @@ return new class extends Migration
             $table->float("appC");
             $table->float("shooting");
             $table->float("ComGlovo");
-            $table->float("ComLivraison");
             $table->string("signature");
             $table->timestamps();
         });

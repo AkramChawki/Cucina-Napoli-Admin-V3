@@ -81,6 +81,9 @@ class ClotureCaisseResource extends Resource
                                 TextInput::make('erreurCaisse')
                                     ->label('Erreur Caisse')
                                     ->numeric(),
+                                TextInput::make('perteEmporte')
+                                    ->label('Perte Emporte')
+                                    ->numeric(),
                                 TextInput::make('giveawayPizza')
                                     ->numeric(),
                                 TextInput::make('giveawayPasta')
