@@ -18,7 +18,7 @@ class ProduitNonConformeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-exclamation-triangle';
 
-    protected static ?string $navigationGroup = 'Controle De Gestion';
+    protected static ?string $navigationGroup = 'QHPSA';
 
     protected static ?string $modelLabel = 'Produit Non Conforme';
 

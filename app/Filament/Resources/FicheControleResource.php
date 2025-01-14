@@ -18,7 +18,7 @@ class FicheControleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
-    protected static ?string $navigationGroup = 'Controle De Gestion';
+    protected static ?string $navigationGroup = 'QHPSA';
 
     protected static ?string $modelLabel = 'Fiche de Contrôle';
 
