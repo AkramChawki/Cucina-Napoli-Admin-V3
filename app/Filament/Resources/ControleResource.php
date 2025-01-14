@@ -115,7 +115,8 @@ class ControleResource extends Resource
             $user->email == "mmalika@cucinanapoli.com" ||
             $user->email == "oilham@cucinanapoli.com" ||
             $user->email == "dmeriem@cucinanapoli.com" ||
-            $user->email == "basmaa@cucinanapoli.com"
+            $user->email == "bfati@cucinanapoli.com"
+
         );
     }
 }
