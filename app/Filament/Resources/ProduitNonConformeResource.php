@@ -12,6 +12,7 @@ use Filament\Tables\Actions\Action;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Filament\Support\Enums\MaxWidth;
+use Illuminate\Contracts\View\View;
 
 class ProduitNonConformeResource extends Resource
 {
@@ -58,7 +59,6 @@ class ProduitNonConformeResource extends Resource
                 Tables\Columns\TextColumn::make('probleme')
                     ->label("Problème")
                     ->searchable(),
-                // Images column that shows thumbnails
                 Tables\Columns\ViewColumn::make('images')
                     ->label('Photos')
                     ->view('filament.tables.columns.images-preview')
@@ -66,7 +66,6 @@ class ProduitNonConformeResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->filters([])
             ->actions([
-                // PDF Action
                 Action::make("pdf")
                     ->label('PDF')
                     ->url(fn (ProduitNonConforme $record): string => 
@@ -74,26 +73,22 @@ class ProduitNonConformeResource extends Resource
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
                 
-                // Images View Action
                 Action::make('view_images')
                     ->label('Photos')
-                    ->icon('heroicon-o-photo')
+                    ->icon('heroicon-o-photograph')
                     ->visible(fn (ProduitNonConforme $record): bool => 
                         $record->images && count($record->images) > 0)
-                    ->modalContent(fn (ProduitNonConforme $record): string => view(
+                    ->modalContent(fn (ProduitNonConforme $record): View => view(
                         'filament.pages.pnc-images-modal',
                         [
                             'images' => collect($record->images)->map(fn ($path) => 
                                 self::RESTAURANT_DOMAIN . $path)
                         ]
-                    )->render())
+                    ))
                     ->modalWidth(MaxWidth::SevenExtraLarge),
                 
-                // Delete Action
                 Tables\Actions\DeleteAction::make()
                     ->after(function (ProduitNonConforme $record) {
-                        // Note: These delete operations should be handled through an API 
-                        // on the restaurant domain or through a shared filesystem
                         if ($record->pdf) {
                             try {
                                 Storage::disk('public')->delete("produits-non-conformes/{$record->pdf}");
