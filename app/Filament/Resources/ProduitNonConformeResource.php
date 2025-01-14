@@ -77,7 +77,7 @@ class ProduitNonConformeResource extends Resource
                 // Images View Action
                 Action::make('view_images')
                     ->label('Photos')
-                    ->icon('heroicon-o-photograph')
+                    ->icon('heroicon-o-photo')
                     ->visible(fn (ProduitNonConforme $record): bool => 
                         $record->images && count($record->images) > 0)
                     ->modalContent(fn (ProduitNonConforme $record): string => view(
