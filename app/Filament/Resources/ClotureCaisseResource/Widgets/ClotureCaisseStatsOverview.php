@@ -14,7 +14,7 @@ class ClotureCaisseStatsOverview extends BaseWidget
         return [
             Card::make('Total Caisse', number_format($this->record->montant, 2) . ' MAD')
                 ->description('Montant total en caisse')
-                ->descriptionIcon('heroicon-s-cash')
+                ->descriptionIcon('heroicon-o-banknotes')
                 ->color('success'),
 
             Card::make('Total Espèces', number_format($this->record->montantE, 2) . ' MAD')
