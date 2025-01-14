@@ -6,7 +6,6 @@ return [
     "Economat" => "Economat",
     "Flash" => "Flash",
     "Inventaire Restaurant" => "Inventaire Restaurant",
-    "Audit" => "Audit",
     "PNC" => "PNC",
     "Fiche-controle" => "Fiche-controle",
     "Livraison" => "Livraison",
