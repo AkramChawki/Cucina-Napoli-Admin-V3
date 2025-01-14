@@ -16,7 +16,7 @@ class ClotureCaisseResource extends Resource
 {
     protected static ?string $model = ClotureCaisse::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cash';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     
     protected static ?string $navigationGroup = 'Chiffre Affaire';
 
