@@ -3,13 +3,12 @@
 namespace App\Filament\Resources\ClotureCaisseResource\Pages;
 
 use App\Filament\Resources\ClotureCaisseResource;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
-use Filament\Infolists\Components\ImageEntry;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\ViewRecord;
-
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Grid;
 
 class ViewClotureCaisse extends ViewRecord
 {
@@ -22,9 +21,9 @@ class ViewClotureCaisse extends ViewRecord
         ];
     }
 
-    public function form(Form $form): Form
+    public function infolist(Infolist $infolist): Infolist
     {
-        return $form
+        return $infolist
             ->schema([
                 Section::make('Information Générale')
                     ->schema([
