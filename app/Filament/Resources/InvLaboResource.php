@@ -2,25 +2,30 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\FromageResource\Pages;
-use App\Models\Fromage;
+use App\Filament\Resources\InvLaboResource\Pages;
+use App\Filament\Resources\InvLaboResource\RelationManagers;
+use App\Models\InvLabo;
+use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Collection;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Actions\Action;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Storage;
+use Filament\Tables\Actions\Action;
 
-class FromageResource extends Resource
+
+class InvLaboResource extends Resource
 {
-    protected static ?string $model = Fromage::class;
+    protected static ?string $model = InvLabo::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Inventaire';
 
-    protected static ?string $modelLabel = 'Inventaire Flash';
+    protected static ?string $modelLabel = 'Inventaire Labo';
 
     protected static ?int $navigationSort = 4;
 
@@ -46,22 +51,22 @@ class FromageResource extends Resource
                     ->label("Date d inventaire")
                     ->date(),
             ])
-            ->defaultSort('created_at', 'desc')
+        ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
             ->actions([
                 Action::make("pdf")
                     ->label('pdf')
-                    ->url(fn(Fromage $record): string => "https://restaurant.cucinanapoli.com/storage/inventaire/$record->pdf")
+                    ->url(fn(InvLabo $record): string => "https://restaurant.cucinanapoli.com/storage/inventaire/$record->pdf")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
                 Action::make("voir")
                     ->label('Voir')
-                    ->url(fn(Fromage $record): string => FromageResource::getUrl("details", ["record" => $record]))
+                    ->url(fn(InvLabo $record): string => InvLaboResource::getUrl("details", ["record" => $record]))
                     ->icon('heroicon-o-eye'),
                 Tables\Actions\DeleteAction::make()
-                    ->after(function (Fromage $record) {
+                    ->after(function (InvLabo $record) {
                         $filesToDelete = array_filter([$record->pdf]);
                         if (!empty($filesToDelete)) {
                             Storage::disk('public')->delete($filesToDelete);
@@ -83,6 +88,11 @@ class FromageResource extends Resource
             ]);
     }
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function getRelations(): array
     {
         return [
@@ -90,29 +100,14 @@ class FromageResource extends Resource
         ];
     }
 
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFromages::route('/'),
-            'create' => Pages\CreateFromage::route('/create'),
-            'edit' => Pages\EditFromage::route('/{record}/edit'),
-            'details' => Pages\FromageDetails::route('/{record}/details'),
+            'index' => Pages\ListInvLabos::route('/'),
+            'create' => Pages\CreateInvLabo::route('/create'),
+            'edit' => Pages\EditInvLabo::route('/{record}/edit'),
+            'details' => Pages\InvLaboDetails::route('/{record}/details'),
 
         ];
-    }
-
-    public static function shouldRegisterNavigation(): bool
-    {
-        $user = auth()->user();
-        return $user && (
-            $user->email == "admin@cucinanapoli.com" ||
-            $user->email == "nimane@cucinanapoli.com" ||
-            $user->email == "bfati@cucinanapoli.com"
-        );
     }
 }
