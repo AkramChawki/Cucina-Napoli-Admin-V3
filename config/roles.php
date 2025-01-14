@@ -13,4 +13,5 @@ return [
     "Restaurant" => "Restaurant",
     "INV Economat" => "INV Economat",
     "INV Labo" => "INV Labo",
+    "Cloture Caisse" => "Cloture Caisse",
 ];
