@@ -12,6 +12,6 @@ return [
     "Livraison" => "Livraison",
     "Numero" => "Numero",
     "Restaurant" => "Restaurant",
-    "INV Economat" => "Restaurant",
+    "INV Economat" => "INV Economat",
     "INV Labo" => "INV Labo",
 ];
