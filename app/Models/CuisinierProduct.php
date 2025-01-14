@@ -16,6 +16,7 @@ class CuisinierProduct extends Model
         'type',
         'cr',
         'prix',
+        'moy',
         'cuisinier_category_id',
     ];
 

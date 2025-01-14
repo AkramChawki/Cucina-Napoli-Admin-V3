@@ -54,11 +54,17 @@ class CuisinierProductResource extends Resource
                     ->step(0.01)
                     ->placeholder('Laissez vide si pas de CR'),
                 Forms\Components\TextInput::make('prix')
-                    ->label('')
+                    ->label('Prix du Produit')
                     ->numeric()
                     ->minValue(0)
                     ->step(0.01)
                     ->placeholder('Laissez vide si pas de prix'),
+                Forms\Components\TextInput::make('moy')
+                    ->label('Moyenne Produits')
+                    ->numeric()
+                    ->minValue(0)
+                    ->step(0.01)
+                    ->placeholder('Laissez vide si pas de moyenne'),
             ]);
     }
 
