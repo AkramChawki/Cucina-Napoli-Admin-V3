@@ -22,13 +22,8 @@ class ClotureCaisseStatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-s-currency-dollar')
                 ->color('success'),
 
-            Card::make('Total Commissions', number_format($this->record->ComGlovo + $this->record->ComLivraison, 2) . ' MAD')
-                ->description('Total des commissions (Glovo + Livraison.ma)')
-                ->descriptionIcon('heroicon-s-calculator')
-                ->color('danger'),
-
-            Card::make('Total Carte Bancaire', number_format($this->record->cartebancaire, 2) . ' MAD')
-                ->description('Paiements par carte bancaire')
+            Card::make('Total Carte Bancaire', number_format($this->record->cartebancaire + $this->record->cartebancaireLivraison, 2) . ' MAD')
+                ->description('Paiements par carte bancaire (avec livraison)')
                 ->descriptionIcon('heroicon-s-credit-card')
                 ->color('primary'),
 
@@ -37,10 +32,20 @@ class ClotureCaisseStatsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-s-truck')
                 ->color('warning'),
 
-            Card::make('Total Livraison.ma', number_format($this->record->LivE + $this->record->LivC, 2) . ' MAD')
-                ->description('Total des paiements Livraison.ma')
-                ->descriptionIcon('heroicon-s-truck')
+            Card::make('Total App', number_format($this->record->appE + $this->record->appC, 2) . ' MAD')
+                ->description('Total des paiements App')
+                ->descriptionIcon('heroicon-s-device-phone-mobile')
                 ->color('warning'),
+
+            Card::make('Total Erreurs', number_format(
+                    $this->record->erreurPizza +
+                    $this->record->erreurCuisine +
+                    $this->record->erreurServeur +
+                    $this->record->erreurCaisse, 2
+                ) . ' MAD')
+                ->description('Total des erreurs')
+                ->descriptionIcon('heroicon-s-exclamation-triangle')
+                ->color('danger'),
         ];
     }
 }

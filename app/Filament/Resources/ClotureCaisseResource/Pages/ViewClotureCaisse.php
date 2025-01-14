@@ -34,17 +34,13 @@ class ViewClotureCaisse extends ViewRecord
                                 TextEntry::make('restau')
                                     ->label('Restaurant'),
                                 TextEntry::make('date')
-                                    ->date(),
-                                TextEntry::make('time')
-                                    ->time(),
-                                TextEntry::make('caissierE')
-                                    ->label('Caissier Entrant'),
-                                TextEntry::make('caissierS')
-                                    ->label('Caissier Sortant'),
+                                    ->date('d/m/Y'),
+                                TextEntry::make('time'),
+                                TextEntry::make('responsable'),
                             ]),
                     ])->collapsible(),
 
-                Section::make('Montants')
+                Section::make('Montants Principaux')
                     ->schema([
                         Grid::make(3)
                             ->schema([
@@ -58,10 +54,13 @@ class ViewClotureCaisse extends ViewRecord
                                 TextEntry::make('cartebancaire')
                                     ->label('Carte Bancaire')
                                     ->money('mad'),
+                                TextEntry::make('cartebancaireLivraison')
+                                    ->label('CB Livraison')
+                                    ->money('mad'),
                             ]),
                     ])->collapsible(),
 
-                Section::make('Glovo')
+                Section::make('Glovo & Applications')
                     ->schema([
                         Grid::make(3)
                             ->schema([
@@ -75,23 +74,12 @@ class ViewClotureCaisse extends ViewRecord
                                     ->label('Commission Glovo')
                                     ->money('mad')
                                     ->color('danger'),
-                            ]),
-                    ])->collapsible(),
-
-                Section::make('Livraison.ma')
-                    ->schema([
-                        Grid::make(3)
-                            ->schema([
-                                TextEntry::make('LivE')
-                                    ->label('Livraison.ma Espèce')
+                                TextEntry::make('appE')
+                                    ->label('App Espèce')
                                     ->money('mad'),
-                                TextEntry::make('LivC')
-                                    ->label('Livraison.ma Carte')
+                                TextEntry::make('appC')
+                                    ->label('App Carte')
                                     ->money('mad'),
-                                TextEntry::make('ComLivraison')
-                                    ->label('Commission Livraison')
-                                    ->money('mad')
-                                    ->color('danger'),
                             ]),
                     ])->collapsible(),
 
@@ -100,12 +88,40 @@ class ViewClotureCaisse extends ViewRecord
                         Grid::make(3)
                             ->schema([
                                 TextEntry::make('virement')
-                                    ->label('Virement Instantané')
+                                    ->label('Virement')
                                     ->money('mad'),
                                 TextEntry::make('cheque')
                                     ->label('Chèque')
                                     ->money('mad'),
-                                TextEntry::make('Compensation')
+                                TextEntry::make('compensation')
+                                    ->money('mad'),
+                            ]),
+                    ])->collapsible(),
+
+                Section::make('Erreurs et Ajustements')
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                TextEntry::make('familleAcc')
+                                    ->label('Famille & Accompagnant')
+                                    ->money('mad'),
+                                TextEntry::make('erreurPizza')
+                                    ->label('Erreur Pizza')
+                                    ->money('mad'),
+                                TextEntry::make('erreurCuisine')
+                                    ->label('Erreur Cuisine')
+                                    ->money('mad'),
+                                TextEntry::make('erreurServeur')
+                                    ->label('Erreur Serveur')
+                                    ->money('mad'),
+                                TextEntry::make('erreurCaisse')
+                                    ->label('Erreur Caisse')
+                                    ->money('mad'),
+                                TextEntry::make('giveawayPizza')
+                                    ->money('mad'),
+                                TextEntry::make('giveawayPasta')
+                                    ->money('mad'),
+                                TextEntry::make('shooting')
                                     ->money('mad'),
                             ]),
                     ])->collapsible(),

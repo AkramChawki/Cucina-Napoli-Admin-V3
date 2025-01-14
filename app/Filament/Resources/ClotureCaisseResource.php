@@ -8,10 +8,11 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Card;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TimePicker;
 use Filament\Tables\Actions\ExportBulkAction;
 
 class ClotureCaisseResource extends Resource
@@ -30,7 +31,80 @@ class ClotureCaisseResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Card::make()
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Nom')
+                                    ->required(),
+                                TextInput::make('restau')
+                                    ->label('Restaurant')
+                                    ->required(),
+                                DatePicker::make('date')
+                                    ->required(),
+                                TimePicker::make('time')
+                                    ->required(),
+                                TextInput::make('responsable')
+                                    ->required(),
+                                TextInput::make('montant')
+                                    ->label('Montant Total')
+                                    ->numeric()
+                                    ->required(),
+                                TextInput::make('montantE')
+                                    ->label('Montant Espèce')
+                                    ->numeric(),
+                                TextInput::make('cartebancaire')
+                                    ->label('Carte Bancaire')
+                                    ->numeric(),
+                                TextInput::make('cartebancaireLivraison')
+                                    ->label('CB Livraison')
+                                    ->numeric(),
+                                TextInput::make('virement')
+                                    ->numeric(),
+                                TextInput::make('cheque')
+                                    ->numeric(),
+                                TextInput::make('compensation')
+                                    ->numeric(),
+                                TextInput::make('familleAcc')
+                                    ->label('Famille & Accompagnant')
+                                    ->numeric(),
+                                TextInput::make('erreurPizza')
+                                    ->label('Erreur Pizza')
+                                    ->numeric(),
+                                TextInput::make('erreurCuisine')
+                                    ->label('Erreur Cuisine')
+                                    ->numeric(),
+                                TextInput::make('erreurServeur')
+                                    ->label('Erreur Serveur')
+                                    ->numeric(),
+                                TextInput::make('erreurCaisse')
+                                    ->label('Erreur Caisse')
+                                    ->numeric(),
+                                TextInput::make('giveawayPizza')
+                                    ->numeric(),
+                                TextInput::make('giveawayPasta')
+                                    ->numeric(),
+                                TextInput::make('glovoE')
+                                    ->label('Glovo Espèce')
+                                    ->numeric(),
+                                TextInput::make('glovoC')
+                                    ->label('Glovo Carte')
+                                    ->numeric(),
+                                TextInput::make('appE')
+                                    ->label('App Espèce')
+                                    ->numeric(),
+                                TextInput::make('appC')
+                                    ->label('App Carte')
+                                    ->numeric(),
+                                TextInput::make('shooting')
+                                    ->numeric(),
+                                TextInput::make('ComGlovo')
+                                    ->label('Commission Glovo')
+                                    ->numeric()
+                                    ->disabled(),
+                            ])
+                    ])
             ]);
     }
 
@@ -50,6 +124,10 @@ class ClotureCaisseResource extends Resource
 
                 Tables\Columns\TextColumn::make('date')
                     ->date('d/m/Y')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('responsable')
+                    ->searchable()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('montant')
@@ -81,16 +159,6 @@ class ClotureCaisseResource extends Resource
 
                 Tables\Columns\TextColumn::make('ComGlovo')
                     ->label('Com. Glovo')
-                    ->money('mad')
-                    ->color('danger')
-                    ->sortable()
-                    ->summarize([
-                        Tables\Columns\Summarizers\Sum::make()
-                            ->money('mad'),
-                    ]),
-
-                Tables\Columns\TextColumn::make('ComLivraison')
-                    ->label('Com. Livraison')
                     ->money('mad')
                     ->color('danger')
                     ->sortable()
@@ -133,15 +201,7 @@ class ClotureCaisseResource extends Resource
                 Tables\Actions\DeleteBulkAction::make()
                     ->requiresConfirmation(),
                 ExportBulkAction::make()
-
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
