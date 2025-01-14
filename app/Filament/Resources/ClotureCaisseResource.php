@@ -10,14 +10,16 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
+use Filament\Tables\Actions\ExportBulkAction;
 
 class ClotureCaisseResource extends Resource
 {
     protected static ?string $model = ClotureCaisse::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
-    
+
     protected static ?string $navigationGroup = 'Chiffre Affaire';
 
     protected static ?string $navigationLabel = 'Cloture de Caisse';
@@ -27,9 +29,9 @@ class ClotureCaisseResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        ->schema([
-            //
-        ]);
+            ->schema([
+                //
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -47,53 +49,91 @@ class ClotureCaisseResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('date')
-                    ->date()
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('time')
-                    ->time()
+                    ->date('d/m/Y')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('montant')
                     ->label('Montant Caisse')
                     ->money('mad')
-                    ->sortable(),
+                    ->sortable()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->money('mad'),
+                    ]),
 
                 Tables\Columns\TextColumn::make('montantE')
-                    ->label('Montant Espèce')
+                    ->label('Espèces')
                     ->money('mad')
-                    ->sortable(),
+                    ->sortable()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->money('mad'),
+                    ]),
+
+                Tables\Columns\TextColumn::make('cartebancaire')
+                    ->label('Carte Bancaire')
+                    ->money('mad')
+                    ->sortable()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->money('mad'),
+                    ]),
 
                 Tables\Columns\TextColumn::make('ComGlovo')
-                    ->label('Commission Glovo')
+                    ->label('Com. Glovo')
                     ->money('mad')
-                    ->sortable(),
+                    ->color('danger')
+                    ->sortable()
+                    ->summarize([
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->money('mad'),
+                    ]),
 
                 Tables\Columns\TextColumn::make('ComLivraison')
-                    ->label('Commission Livraison')
+                    ->label('Com. Livraison')
                     ->money('mad')
-                    ->sortable(),
-
-                Tables\Columns\ImageColumn::make('signature')
-                    ->square(),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->color('danger')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->summarize([
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->money('mad'),
+                    ]),
             ])
+            ->defaultSort('date', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('restau')
                     ->label('Restaurant')
-                    ->options(fn () => ClotureCaisse::distinct()->pluck('restau', 'restau')->toArray()),
+                    ->options(fn() => ClotureCaisse::distinct()->pluck('restau', 'restau')->toArray())
+                    ->multiple(),
+
+                Tables\Filters\Filter::make('date')
+                    ->form([
+                        DatePicker::make('date_from')
+                            ->label('Du'),
+                        DatePicker::make('date_to')
+                            ->label('Au'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when(
+                                $data['date_from'],
+                                fn($query) => $query->whereDate('date', '>=', $data['date_from'])
+                            )
+                            ->when(
+                                $data['date_to'],
+                                fn($query) => $query->whereDate('date', '<=', $data['date_to'])
+                            );
+                    }),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->requiresConfirmation(),
+                ExportBulkAction::make()
+
             ]);
     }
 
