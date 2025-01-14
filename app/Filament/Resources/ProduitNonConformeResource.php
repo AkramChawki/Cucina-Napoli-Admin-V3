@@ -11,6 +11,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Filament\Support\Enums\MaxWidth;
 
 class ProduitNonConformeResource extends Resource
 {
@@ -24,10 +25,12 @@ class ProduitNonConformeResource extends Resource
 
     protected static ?int $navigationSort = 6;
 
+    // Restaurant domain constant
+    protected const RESTAURANT_DOMAIN = 'https://restaurant.cucinanapoli.com/storage/';
+
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([]);
+        return $form->schema([]);
     }
 
     public static function table(Table $table): Table
@@ -55,33 +58,82 @@ class ProduitNonConformeResource extends Resource
                 Tables\Columns\TextColumn::make('probleme')
                     ->label("Problème")
                     ->searchable(),
+                // Images column that shows thumbnails
+                Tables\Columns\ViewColumn::make('images')
+                    ->label('Photos')
+                    ->view('filament.tables.columns.images-preview')
             ])
             ->defaultSort('created_at', 'desc')
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
+                // PDF Action
                 Action::make("pdf")
-                    ->label('pdf')
-                    ->url(fn(ProduitNonConforme $record): string => "https://restaurant.cucinanapoli.com/storage/produits-non-conformes/$record->pdf")
+                    ->label('PDF')
+                    ->url(fn (ProduitNonConforme $record): string => 
+                        self::RESTAURANT_DOMAIN . "produits-non-conformes/{$record->pdf}")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
+                
+                // Images View Action
+                Action::make('view_images')
+                    ->label('Photos')
+                    ->icon('heroicon-o-photograph')
+                    ->visible(fn (ProduitNonConforme $record): bool => 
+                        $record->images && count($record->images) > 0)
+                    ->modalContent(fn (ProduitNonConforme $record): string => view(
+                        'filament.pages.pnc-images-modal',
+                        [
+                            'images' => collect($record->images)->map(fn ($path) => 
+                                self::RESTAURANT_DOMAIN . $path)
+                        ]
+                    )->render())
+                    ->modalWidth(MaxWidth::SevenExtraLarge),
+                
+                // Delete Action
                 Tables\Actions\DeleteAction::make()
                     ->after(function (ProduitNonConforme $record) {
+                        // Note: These delete operations should be handled through an API 
+                        // on the restaurant domain or through a shared filesystem
                         if ($record->pdf) {
-                            Storage::disk('public')->delete($record->pdf);
+                            try {
+                                Storage::disk('public')->delete("produits-non-conformes/{$record->pdf}");
+                            } catch (\Exception $e) {
+                                report($e);
+                            }
+                        }
+                        
+                        if ($record->images) {
+                            foreach ($record->images as $imagePath) {
+                                try {
+                                    Storage::disk('public')->delete($imagePath);
+                                } catch (\Exception $e) {
+                                    report($e);
+                                }
+                            }
                         }
                     }),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make()
                     ->after(function (Collection $records) {
-                        $filesToDelete = $records->map(function ($record) {
-                            return $record->pdf;
-                        })->filter()->values()->all();
-
-                        if (!empty($filesToDelete)) {
-                            Storage::disk('public')->delete($filesToDelete);
+                        foreach ($records as $record) {
+                            if ($record->pdf) {
+                                try {
+                                    Storage::disk('public')->delete("produits-non-conformes/{$record->pdf}");
+                                } catch (\Exception $e) {
+                                    report($e);
+                                }
+                            }
+                            
+                            if ($record->images) {
+                                foreach ($record->images as $imagePath) {
+                                    try {
+                                        Storage::disk('public')->delete($imagePath);
+                                    } catch (\Exception $e) {
+                                        report($e);
+                                    }
+                                }
+                            }
                         }
                     }),
             ]);
@@ -89,9 +141,7 @@ class ProduitNonConformeResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function canCreate(): bool
