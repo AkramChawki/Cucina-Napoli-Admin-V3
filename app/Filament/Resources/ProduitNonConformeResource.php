@@ -158,8 +158,7 @@ class ProduitNonConformeResource extends Resource
         $user = auth()->user();
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
-            $user->email == "nimane@cucinanapoli.com" ||
-            $user->email == "nyassin@cucinanapoli.com"
+            $user->email == "nimane@cucinanapoli.com"
         );
     }
 }
