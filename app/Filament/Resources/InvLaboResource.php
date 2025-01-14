@@ -58,7 +58,7 @@ class InvLaboResource extends Resource
             ->actions([
                 Action::make("pdf")
                     ->label('pdf')
-                    ->url(fn(InvLabo $record): string => "https://restaurant.cucinanapoli.com/storage/inventaire/$record->pdf")
+                    ->url(fn(InvLabo $record): string => "https://restaurant.cucinanapoli.com/storage/inventaire-labo/$record->pdf")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
                 Action::make("voir")
