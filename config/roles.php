@@ -5,7 +5,7 @@ return [
     "Labo" => "Labo",
     "Economat" => "Economat",
     "Flash" => "Flash",
-    "Etat de Stock" => "Etat de Stock",
+    "Inventaire Restaurant" => "Inventaire Restaurant",
     "Audit" => "Audit",
     "PNC" => "PNC",
     "Fiche-controle" => "Fiche-controle",
