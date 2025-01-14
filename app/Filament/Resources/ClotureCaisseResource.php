@@ -216,4 +216,14 @@ class ClotureCaisseResource extends Resource
             'view' => Pages\ViewClotureCaisse::route('/{record}'),
         ];
     }
+    public static function shouldRegisterNavigation(): bool
+    {
+        $user = auth()->user();
+        return $user && (
+            $user->email == "admin@cucinanapoli.com" ||
+            $user->email == "nimane@cucinanapoli.com" ||
+            $user->email == "bfati@cucinanapoli.com"
+
+        );
+    }
 }
