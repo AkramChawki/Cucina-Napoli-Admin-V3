@@ -6,6 +6,7 @@ use App\Filament\Resources\CoastCuisineResource;
 use App\Models\CoastCuisine;
 use Filament\Resources\Pages\Page;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class ViewConsumption extends Page
 {
@@ -34,11 +35,17 @@ class ViewConsumption extends Page
             $query->where('fiche_id', 1);
         })->get();
 
-        // Get consumption data
-        $this->consumptionData = CoastCuisine::where('restaurant_id', $record->restaurant_id)
+        // Get consumption data and manually group by product_id
+        $consumptionRecords = CoastCuisine::where('restaurant_id', $record->restaurant_id)
             ->where('month', $record->month)
             ->where('year', $record->year)
-            ->get()
-            ->groupBy('product_id');
+            ->get();
+
+        // Group the data manually using a Collection
+        $this->consumptionData = $consumptionRecords->groupBy('product_id')
+            ->map(function (Collection $group) {
+                return $group->keyBy('day');
+            })
+            ->toArray();
     }
 }
