@@ -35,17 +35,10 @@ class ViewConsumption extends Page
             $query->where('fiche_id', 1);
         })->get();
 
-        // Get consumption data and manually group by product_id
-        $consumptionRecords = CoastCuisine::where('restaurant_id', $record->restaurant_id)
+        $this->consumptionData = CoastCuisine::where('restaurant_id', $record->restaurant_id)
             ->where('month', $record->month)
             ->where('year', $record->year)
-            ->get();
-
-        // Group the data manually using a Collection
-        $this->consumptionData = $consumptionRecords->groupBy('product_id')
-            ->map(function (Collection $group) {
-                return $group->keyBy('day');
-            })
-            ->toArray();
+            ->get()
+            ->groupBy('product_id');
     }
 }
