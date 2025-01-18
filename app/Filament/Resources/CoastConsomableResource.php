@@ -103,7 +103,7 @@ class CoastConsomableResource extends Resource
                     
                 Tables\Columns\TextColumn::make('value')
                     ->sortable()
-                    ->money('EUR'),
+                    ->money('MAD'),
                     
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -144,10 +144,6 @@ class CoastConsomableResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\Action::make('view_consumption')
-                    ->label('Voir consommation')
-                    ->icon('heroicon-o-eye')
-                    ->url(fn (CoastConsomable $record) => route('filament.admin.resources.coast-consomables.view-consumption', $record))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -169,7 +165,6 @@ class CoastConsomableResource extends Resource
             'index' => Pages\ListCoastConsomables::route('/'),
             'create' => Pages\CreateCoastConsomable::route('/create'),
             'edit' => Pages\EditCoastConsomable::route('/{record}/edit'),
-            'view-consumption' => Pages\ViewConsumption::route('/{record}/consumption'),
         ];
     }
 }

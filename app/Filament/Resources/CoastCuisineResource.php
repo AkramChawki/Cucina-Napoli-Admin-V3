@@ -126,10 +126,6 @@ class CoastCuisineResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\Action::make('view_consumption')
-                    ->label('Voir consommation')
-                    ->icon('heroicon-o-eye')
-                    ->url(fn (CoastCuisine $record) => route('filament.admin.resources.coast-cuisines.view-consumption', $record))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -152,7 +148,6 @@ class CoastCuisineResource extends Resource
             'index' => Pages\ListCoastCuisines::route('/'),
             'create' => Pages\CreateCoastCuisine::route('/create'),
             'edit' => Pages\EditCoastCuisine::route('/{record}/edit'),
-            'view-consumption' => Pages\ViewConsumption::route('/{record}/consumption'),
         ];
     }
 }
