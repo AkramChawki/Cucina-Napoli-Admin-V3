@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\CoastCuisineResource\Pages;
 
 use App\Filament\Resources\CoastCuisineResource;
+use App\Models\CoastCuisine;
 use Filament\Resources\Pages\Page;
 use Carbon\Carbon;
 
@@ -10,7 +11,6 @@ class ViewConsumption extends Page
 {
     protected static string $resource = CoastCuisineResource::class;
 
-    // Updated view path to match the directory structure
     protected static string $view = 'filament.resources.coast-cuisines.view-consumption';
 
     public $record;
@@ -18,8 +18,13 @@ class ViewConsumption extends Page
     public $products;
     public $consumptionData;
 
-    public function mount($record): void
+    public function mount(string|CoastCuisine $record): void
     {
+        // If record is a string (ID), load the model
+        if (is_string($record)) {
+            $record = CoastCuisine::find($record);
+        }
+
         $this->record = $record;
         $date = Carbon::createFromDate($record->year, $record->month, 1);
         $this->daysInMonth = $date->daysInMonth;
@@ -30,7 +35,7 @@ class ViewConsumption extends Page
         })->get();
 
         // Get consumption data
-        $this->consumptionData = \App\Models\CoastCuisine::where('restaurant_id', $record->restaurant_id)
+        $this->consumptionData = CoastCuisine::where('restaurant_id', $record->restaurant_id)
             ->where('month', $record->month)
             ->where('year', $record->year)
             ->get()
