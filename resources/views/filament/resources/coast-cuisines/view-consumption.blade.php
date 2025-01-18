@@ -47,11 +47,11 @@
                                     <td class="px-2 py-1 border border-gray-200 dark:border-gray-700 text-center">
                                         @if(isset($consumptionData[$product->id]))
                                             @php
-                                                $dayData = $consumptionData[$product->id]->firstWhere('day', $day);
+                                                $dayData = collect($consumptionData[$product->id])->where('day', $day)->first();
                                             @endphp
                                             @if($dayData)
                                                 <span class="text-gray-900 dark:text-white">
-                                                    {{ number_format($dayData->value, 2) }}
+                                                    {{ number_format($dayData['value'], 2) }}
                                                 </span>
                                             @else
                                                 <span class="text-gray-400 dark:text-gray-600">-</span>
