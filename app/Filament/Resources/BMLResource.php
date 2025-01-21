@@ -110,7 +110,7 @@ class BMLResource extends Resource
                     
                 Tables\Columns\TextColumn::make('price')
                     ->label('Prix')
-                    ->money('EUR')
+                    ->money('mad')
                     ->sortable(),
                     
                 Tables\Columns\TextColumn::make('created_at')

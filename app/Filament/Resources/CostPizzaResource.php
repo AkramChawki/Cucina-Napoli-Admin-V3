@@ -97,7 +97,7 @@ class CostPizzaResource extends Resource
                     
                 Tables\Columns\TextColumn::make('value')
                     ->sortable()
-                    ->money('EUR'),
+                    ->money('mad'),
                     
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

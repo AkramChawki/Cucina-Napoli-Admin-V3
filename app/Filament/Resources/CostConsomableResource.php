@@ -103,7 +103,7 @@ class CostConsomableResource extends Resource
                     
                 Tables\Columns\TextColumn::make('value')
                     ->sortable()
-                    ->money('MAD'),
+                    ->money('mad'),
                     
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
