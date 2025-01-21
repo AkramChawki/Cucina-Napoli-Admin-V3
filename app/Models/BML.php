@@ -9,6 +9,7 @@ class BML extends Model
     protected $table = 'b_m_l_s';
     
     protected $fillable = [
+        'restaurant_id',
         'fournisseur',
         'designation',
         'quantity',
@@ -16,4 +17,9 @@ class BML extends Model
         'month',
         'year'
     ];
+
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
+    }
 }

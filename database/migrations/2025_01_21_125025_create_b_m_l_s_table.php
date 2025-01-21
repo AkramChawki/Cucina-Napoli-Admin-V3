@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('b_m_l_s', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('restaurant_id')->constrained()->onDelete('cascade');
             $table->string('fournisseur');
             $table->string('designation');
             $table->decimal('quantity', 10, 2);
