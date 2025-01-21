@@ -1,4 +1,3 @@
-// database/migrations/[timestamp]_create_coast_cuisines_table.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -7,9 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
-        Schema::create('coast_cuisines', function (Blueprint $table) {
+        Schema::create('cost_consomables', function (Blueprint $table) {
             $table->id();
             $table->foreignId('restaurant_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained('cuisinier_products')->onDelete('cascade');
@@ -24,8 +26,11 @@ return new class extends Migration
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        Schema::dropIfExists('coast_cuisines');
+        Schema::dropIfExists('cost_consomables');
     }
 };

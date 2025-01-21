@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CoastCuisine extends Model
+class CostEconomat extends Model
 {
     use HasFactory;
 

@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CoastCuisineResource\Pages;
-use App\Models\CoastCuisine;
+use App\Filament\Resources\CostConsomableResource\Pages;
+use App\Models\CostConsomable;
 use App\Models\Restaurant;
 use App\Models\CuisinierProduct;
 use Filament\Forms;
@@ -13,13 +13,12 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class CoastCuisineResource extends Resource
+class CostConsomableResource extends Resource
 {
-    protected static ?string $model = CoastCuisine::class;
-    protected static ?string $navigationIcon = 'heroicon-o-beaker';
+    protected static ?string $model = CostConsomable::class;
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static ?string $navigationGroup = 'Restaurant Management';
-    protected static ?int $navigationSort = 4;
-    protected static ?string $modelLabel = 'Coast Cuisine';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -33,19 +32,18 @@ class CoastCuisineResource extends Resource
                     
                 Forms\Components\Select::make('product_id')
                     ->label('Product')
-                    ->options(fn () => CuisinierProduct::whereHas('fiches', function ($query) {
-                        $query->where('fiche_id', 1);
-                    })->pluck('designation', 'id'))
+                    ->options(CuisinierProduct::whereIn('id', [
+                        204,352,281,206,280,207,353,211,210,212,213,289,290,291,
+                        357,358,374,408,434,433,453,442,201,202,335,241,242,431,
+                        438,243,25,14,16,19,20,26,24,18,17,15,401,163,167
+                    ])->pluck('designation', 'id'))
                     ->required()
                     ->searchable(),
                     
                 Forms\Components\Grid::make()
                     ->schema([
                         Forms\Components\Select::make('month')
-                            ->options(array_combine(range(1, 12), [
-                                'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-                                'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
-                            ]))
+                            ->options(array_combine(range(1, 12), range(1, 12)))
                             ->required(),
                             
                         Forms\Components\Select::make('year')
@@ -81,11 +79,19 @@ class CoastCuisineResource extends Resource
                     ->searchable(),
                     
                 Tables\Columns\TextColumn::make('month')
-                    ->formatStateUsing(fn ($state) => [
-                        1 => 'Janvier', 2 => 'Février', 3 => 'Mars',
-                        4 => 'Avril', 5 => 'Mai', 6 => 'Juin',
-                        7 => 'Juillet', 8 => 'Août', 9 => 'Septembre',
-                        10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre'
+                    ->formatStateUsing(fn(int $state): string => [
+                        1 => 'Janvier',
+                        2 => 'Février',
+                        3 => 'Mars',
+                        4 => 'Avril',
+                        5 => 'Mai',
+                        6 => 'Juin',
+                        7 => 'Juillet',
+                        8 => 'Août',
+                        9 => 'Septembre',
+                        10 => 'Octobre',
+                        11 => 'Novembre',
+                        12 => 'Décembre',
                     ][$state])
                     ->sortable(),
                     
@@ -97,19 +103,31 @@ class CoastCuisineResource extends Resource
                     
                 Tables\Columns\TextColumn::make('value')
                     ->sortable()
-                    ->numeric(2),
+                    ->money('MAD'),
+                    
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('restaurant')
                     ->relationship('restaurant', 'name'),
                     
-                Tables\Filters\SelectFilter::make('month')
-                    ->options([
-                        1 => 'Janvier', 2 => 'Février', 3 => 'Mars',
-                        4 => 'Avril', 5 => 'Mai', 6 => 'Juin',
-                        7 => 'Juillet', 8 => 'Août', 9 => 'Septembre',
-                        10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre'
-                    ]),
+                Tables\Filters\SelectFilter::make('product')
+                    ->relationship('product', 'designation'),
+                    
+                Tables\Filters\Filter::make('month')
+                    ->form([
+                        Forms\Components\Select::make('month')
+                            ->options(array_combine(range(1, 12), range(1, 12))),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['month'],
+                            fn (Builder $query, $month): Builder => $query->where('month', $month),
+                        );
+                    }),
                     
                 Tables\Filters\Filter::make('year')
                     ->form([
@@ -131,8 +149,7 @@ class CoastCuisineResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->defaultSort('created_at', 'desc');
+            ]);
     }
     
     public static function getRelations(): array
@@ -145,9 +162,9 @@ class CoastCuisineResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCoastCuisines::route('/'),
-            'create' => Pages\CreateCoastCuisine::route('/create'),
-            'edit' => Pages\EditCoastCuisine::route('/{record}/edit'),
+            'index' => Pages\ListCostConsomables::route('/'),
+            'create' => Pages\CreateCostConsomable::route('/create'),
+            'edit' => Pages\EditCostConsomable::route('/{record}/edit'),
         ];
     }
 }
