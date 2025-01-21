@@ -14,4 +14,10 @@ return [
     "INV Economat" => "INV Economat",
     "INV Labo" => "INV Labo",
     "Cloture Caisse" => "Cloture Caisse",
+    "Flux Reel" => "Flux Reel",
+    "Cost Cuisine" => "Cost Cuisine",
+    "Cost Pizza" => "Cost Pizza",
+    "Cost Economat" => "Cost Economat",
+    "Cost Consomable" => "Cost Consomable",
+    "BML" => "BML",
 ];
