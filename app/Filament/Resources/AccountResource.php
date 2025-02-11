@@ -41,7 +41,8 @@ class AccountResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->maxLength(255)
                     ->hiddenOn(Pages\EditAccount::class),
-                Forms\Components\Select::make('restau')
+                    Forms\Components\Select::make('restau')
+                    ->multiple()
                     ->label('Restaurant')
                     ->options([
                         'anoual' => 'Anoual',
@@ -49,7 +50,8 @@ class AccountResource extends Resource
                         'ziraoui' => 'Ziraoui',
                         'to go' => 'To Go'
                     ])
-                    ->native(false),
+                    ->native(false)
+                    ->columnSpanFull(),
                 Forms\Components\Select::make('role')
                     ->multiple()
                     ->options(config("roles"))
@@ -66,8 +68,11 @@ class AccountResource extends Resource
                     ->label("Nom d utilisateur"),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('restau')
-                    ->label('Restaurant'),
+                    Tables\Columns\TextColumn::make('restau')
+                    ->label('Restaurant')
+                    ->formatStateUsing(fn ($state) => 
+                        is_array($state) ? implode(', ', $state) : $state
+                    ),
                 Tables\Columns\TextColumn::make('role'),
             ])
             ->filters([
