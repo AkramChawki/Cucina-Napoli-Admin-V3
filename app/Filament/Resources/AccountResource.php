@@ -41,6 +41,15 @@ class AccountResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->maxLength(255)
                     ->hiddenOn(Pages\EditAccount::class),
+                Forms\Components\Select::make('restau')
+                    ->label('Restaurant')
+                    ->options([
+                        'anoual' => 'Anoual',
+                        'palmier' => 'Palmier',
+                        'ziraoui' => 'Ziraoui',
+                        'to go' => 'To Go'
+                    ])
+                    ->native(false),
                 Forms\Components\Select::make('role')
                     ->multiple()
                     ->options(config("roles"))
