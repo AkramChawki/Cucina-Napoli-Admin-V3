@@ -49,9 +49,7 @@ class AccountResource extends Resource
                         'palmier' => 'Palmier',
                         'ziraoui' => 'Ziraoui',
                         'to go' => 'To Go'
-                    ])
-                    ->native(false)
-                    ->columnSpanFull(),
+                    ]),
                 Forms\Components\Select::make('role')
                     ->multiple()
                     ->options(config("roles"))
