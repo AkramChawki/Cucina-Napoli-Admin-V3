@@ -66,6 +66,8 @@ class AccountResource extends Resource
                     ->label("Nom d utilisateur"),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('restau')
+                    ->label('Restaurant'),
                 Tables\Columns\TextColumn::make('role'),
             ])
             ->filters([

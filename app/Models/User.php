@@ -30,6 +30,7 @@ class User extends Authenticatable implements FilamentUser
         'prenom',
         'telephone',
         'points',
+        'restau',
     ];
 
     /**
