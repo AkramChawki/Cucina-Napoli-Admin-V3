@@ -23,7 +23,7 @@ class InfractionResource extends Resource
 
     protected static ?string $navigationGroup = 'CRM';
 
-    protected static ?string $modelLabel = 'Numero';
+    protected static ?string $modelLabel = 'Infractions';
 
     protected static ?int $navigationSort = 4;
 
