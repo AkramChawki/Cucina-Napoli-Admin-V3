@@ -21,6 +21,12 @@ class InfractionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'CRM';
+
+    protected static ?string $modelLabel = 'Numero';
+
+    protected static ?int $navigationSort = 4;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -84,9 +90,16 @@ class InfractionResource extends Resource
                     })
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->modalContent(fn ($record) => view('filament.resources.infraction.modal', [
+                        'imageUrl' => "https://restaurant.cucinanapoli.com/storage/infractions/{$record->photo_path}"
+                    ])),
+                    Tables\Actions\Action::make('pdf')
+                    ->label('PDF')
+                    ->url(fn ($record): string => "https://restaurant.cucinanapoli.com/storage/infractions/{$record->pdf}")
+                    ->openUrlInNewTab()
+                    ->icon('heroicon-o-document'),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -100,6 +113,11 @@ class InfractionResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 
     public static function getPages(): array
