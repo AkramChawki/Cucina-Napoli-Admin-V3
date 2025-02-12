@@ -96,7 +96,7 @@ class InfractionResource extends Resource
                     ])),
                     Tables\Actions\Action::make('pdf')
                     ->label('PDF')
-                    ->url(fn ($record): string => "https://restaurant.cucinanapoli.com/storage/infractions/{$record->pdf}")
+                    ->url(fn ($record): string => "https://restaurant.cucinanapoli.com/storage/{$record->pdf}")
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-document'),
                 Tables\Actions\DeleteAction::make(),
