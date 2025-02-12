@@ -58,8 +58,6 @@ class InfractionResource extends Resource
                 Tables\Columns\TextColumn::make('infraction_time')
                     ->time('H:i')
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('photo_path')
-                    ->label('Photo'),
             ])
             ->filters([
                 SelectFilter::make('restaurant')
