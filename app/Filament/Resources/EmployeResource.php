@@ -168,32 +168,43 @@ class EmployeResource extends Resource
                     ->icon('heroicon-o-user-plus')
                     ->color('warning')
                     ->action(function (Employe $record) {
-                        // Check if account already exists
-                        $username = strtolower(substr($record->last_name, 0, 1) . $record->first_name);
-                        $email = $username . '@cucinanapoli.com';
-                        if (User::where('email', $email)->exists()) {
-                            Notification::make()
-                                ->warning()
-                                ->title('Compte existe déjà')
-                                ->body('Un compte avec cet email existe déjà.')
-                                ->send();
-                            return;
+                        $baseUsername = strtolower(
+                            preg_replace('/[^a-zA-Z0-9]/', '', 
+                                transliterator_transliterate('Any-Latin; Latin-ASCII', 
+                                    $record->first_name . '.' . $record->last_name
+                                )
+                            )
+                        );
+                        
+                        $username = $baseUsername;
+                        $counter = 1;
+                        
+                        while (User::where('email', $username . '@cucinanapoli.com')->exists()) {
+                            $username = $baseUsername . $counter;
+                            $counter++;
                         }
-                        User::create([
+                        
+                        $email = $username . '@cucinanapoli.com';
+                        
+                        $user = User::create([
                             'name' => $username,
                             'email' => $email,
                             'password' => bcrypt($record->telephone),
-                            'employe_id' => $record->id  // Added this line to link to employee
+                            'employe_id' => $record->id,
+                            'password_change_required' => true,
+                            'restau' => json_encode([$record->restau])
                         ]);
+                        
                         Notification::make()
                             ->success()
                             ->title('Compte créé')
-                            ->body('Le compte a été créé avec succès.')
+                            ->body("Le compte a été créé avec succès.\nIdentifiant: {$username}\nMot de passe temporaire: {$record->telephone}")
+                            ->duration(10000) // Give them more time to read/copy the credentials
                             ->send();
                     })
                     ->visible(function (Employe $record) {
-                        $email = strtolower(substr($record->last_name, 0, 1) . $record->first_name) . '@cucinanapoli.com';
-                        return !User::where('email', $email)->exists();
+                        $baseUsername = strtolower($record->first_name . '.' . $record->last_name);
+                        return !User::where('email', 'LIKE', $baseUsername . '%@cucinanapoli.com')->exists();
                     }),
                 Tables\Actions\DeleteAction::make(),
             ])
