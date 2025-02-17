@@ -6,8 +6,7 @@ use App\Models\CostConsomable;
 use App\Models\CuisinierProduct;
 use App\Traits\CostResourceTrait;
 use Filament\Resources\Resource;
-
-
+use App\Filament\Resources\CostConsomableResource\Pages;
 
 class CostConsomableResource extends Resource
 {
@@ -21,8 +20,17 @@ class CostConsomableResource extends Resource
 
     protected static function getProductOptions()
     {
-        $includedProductIds = [204,352,281,206,280,207,353,211,210,212,213,289,290,291,357,358,374,408,434,433,453,442,201,202,335,241,242,431,438,243,25,14,16,19,20,26,24,18,17,15,401,163,167];
-        
+        $includedProductIds = [204, 352, 281, 206, 280, 207, 353, 211, 210, 212, 213, 289, 290, 291, 357, 358, 374, 408, 434, 433, 453, 442, 201, 202, 335, 241, 242, 431, 438, 243, 25, 14, 16, 19, 20, 26, 24, 18, 17, 15, 401, 163, 167];
+
         return CuisinierProduct::whereIn('id', $includedProductIds)->pluck('designation', 'id');
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListCostConsomables::route('/'),
+            'create' => Pages\CreateCostConsomable::route('/create'),
+            'edit' => Pages\EditCostConsomable::route('/{record}/edit'),
+        ];
     }
 }

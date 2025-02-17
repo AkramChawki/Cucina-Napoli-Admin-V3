@@ -6,6 +6,8 @@ use App\Models\CostCuisine;
 use App\Models\CuisinierProduct;
 use App\Traits\CostResourceTrait;
 use Filament\Resources\Resource;
+use App\Filament\Resources\CostCuisineResource\Pages;
+
 
 class CostCuisineResource extends Resource
 {
@@ -22,5 +24,14 @@ class CostCuisineResource extends Resource
         return CuisinierProduct::whereHas('fiches', function ($query) {
             $query->where('fiche_id', 1);
         })->pluck('designation', 'id');
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListCostCuisines::route('/'),
+            'create' => Pages\CreateCostCuisine::route('/create'),
+            'edit' => Pages\EditCostCuisine::route('/{record}/edit'),
+        ];
     }
 }
