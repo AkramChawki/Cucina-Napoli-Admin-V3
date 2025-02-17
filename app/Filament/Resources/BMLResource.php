@@ -42,6 +42,20 @@ class BMLResource extends Resource
                         Forms\Components\Select::make('year')
                             ->options(array_combine(range(date('Y')-1, date('Y')+1), range(date('Y')-1, date('Y')+1)))
                             ->required(),
+
+                        Forms\Components\DatePicker::make('date')
+                            ->required()
+                            ->format('Y-m-d'),
+
+                        Forms\Components\Select::make('type')
+                            ->label('Type')
+                            ->options([
+                                'achat' => 'Achat',
+                                'livraison' => 'Livraison',
+                                'stock' => 'Stock',
+                                'autre' => 'Autre'
+                            ])
+                            ->required(),
                     ]),
                     
                 Forms\Components\TextInput::make('fournisseur')
@@ -62,12 +76,26 @@ class BMLResource extends Resource
                             ->minValue(0)
                             ->step('0.01'),
                             
+                        Forms\Components\TextInput::make('unite')
+                            ->label('Unité')
+                            ->required(),
+
                         Forms\Components\TextInput::make('price')
                             ->label('Prix')
                             ->required()
                             ->numeric()
                             ->minValue(0)
                             ->step('0.01')
+                            ->suffix('€'),
+
+                        Forms\Components\TextInput::make('total_ttc')
+                            ->label('Total TTC')
+                            ->numeric()
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->reactive()
+                            ->afterStateUpdated(fn ($state, callable $set) => 
+                                $set('total_ttc', $state * ($state['quantity'] ?? 0) * ($state['price'] ?? 0)))
                             ->suffix('€'),
                     ]),
             ]);
@@ -81,6 +109,19 @@ class BMLResource extends Resource
                     ->label('Restaurant')
                     ->sortable()
                     ->searchable(),
+                    
+                Tables\Columns\TextColumn::make('date')
+                    ->date('d/m/Y')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('type')
+                    ->formatStateUsing(fn ($state) => [
+                        'achat' => 'Achat',
+                        'livraison' => 'Livraison',
+                        'stock' => 'Stock',
+                        'autre' => 'Autre'
+                    ][$state])
+                    ->sortable(),
                     
                 Tables\Columns\TextColumn::make('month')
                     ->formatStateUsing(fn ($state) => [
@@ -107,10 +148,19 @@ class BMLResource extends Resource
                     ->label('Quantité')
                     ->numeric(2)
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('unite')
+                    ->label('Unité')
+                    ->sortable(),
                     
                 Tables\Columns\TextColumn::make('price')
                     ->label('Prix')
-                    ->money('mad')
+                    ->money('eur')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('total_ttc')
+                    ->label('Total TTC')
+                    ->money('eur')
                     ->sortable(),
                     
                 Tables\Columns\TextColumn::make('created_at')
@@ -121,6 +171,14 @@ class BMLResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('restaurant')
                     ->relationship('restaurant', 'name'),
+                    
+                Tables\Filters\SelectFilter::make('type')
+                    ->options([
+                        'achat' => 'Achat',
+                        'livraison' => 'Livraison',
+                        'stock' => 'Stock',
+                        'autre' => 'Autre'
+                    ]),
                     
                 Tables\Filters\SelectFilter::make('month')
                     ->options([
