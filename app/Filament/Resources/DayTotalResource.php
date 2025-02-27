@@ -81,24 +81,33 @@ class DayTotalResource extends Resource
                     ->searchable(),
                     
                 Tables\Columns\TextColumn::make('type')
-                    ->formatStateUsing(fn ($state) => [
-                        DayTotal::TYPE_CONSOMMABLE => 'Consommable',
-                        DayTotal::TYPE_CUISINE => 'Cuisine',
-                        DayTotal::TYPE_ECONOMAT => 'Economat',
-                        DayTotal::TYPE_PIZZA => 'Pizza',
-                    ][$state])
+                    ->formatStateUsing(function ($state) {
+                        $types = [
+                            DayTotal::TYPE_CONSOMMABLE => 'Consommable',
+                            DayTotal::TYPE_CUISINE => 'Cuisine',
+                            DayTotal::TYPE_ECONOMAT => 'Economat',
+                            DayTotal::TYPE_PIZZA => 'Pizza',
+                        ];
+                        
+                        // Return the mapped value or the original state if not found
+                        return $types[$state] ?? $state;
+                    })
                     ->sortable(),
                     
                 Tables\Columns\TextColumn::make('day')
                     ->sortable(),
                     
                 Tables\Columns\TextColumn::make('month')
-                    ->formatStateUsing(fn ($state) => [
-                        1 => 'Janvier', 2 => 'Février', 3 => 'Mars',
-                        4 => 'Avril', 5 => 'Mai', 6 => 'Juin',
-                        7 => 'Juillet', 8 => 'Août', 9 => 'Septembre',
-                        10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre'
-                    ][$state])
+                    ->formatStateUsing(function ($state) {
+                        $months = [
+                            1 => 'Janvier', 2 => 'Février', 3 => 'Mars',
+                            4 => 'Avril', 5 => 'Mai', 6 => 'Juin',
+                            7 => 'Juillet', 8 => 'Août', 9 => 'Septembre',
+                            10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre'
+                        ];
+                        
+                        return $months[$state] ?? $state;
+                    })
                     ->sortable(),
                     
                 Tables\Columns\TextColumn::make('year')
