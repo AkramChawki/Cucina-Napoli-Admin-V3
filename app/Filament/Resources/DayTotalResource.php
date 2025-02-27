@@ -67,7 +67,7 @@ class DayTotalResource extends Resource
                     ->numeric()
                     ->minValue(0)
                     ->step('0.01')
-                    ->suffix('€'),
+                    ->suffix('MAD'),
             ]);
     }
 

@@ -82,7 +82,7 @@ class BMLResource extends Resource
                             ->numeric()
                             ->minValue(0)
                             ->step('0.01')
-                            ->suffix('€')
+                            ->suffix('MAD')
                             ->reactive(),
 
                         Forms\Components\TextInput::make('total_ttc')
@@ -97,7 +97,7 @@ class BMLResource extends Resource
                                 $price = $get('price') ?? 0;
                                 $set('total_ttc', $quantity * $price);
                             })
-                            ->suffix('€'),
+                            ->suffix('MAD'),
                     ]),
             ]);
     }
