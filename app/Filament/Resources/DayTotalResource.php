@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\BMLResource\Pages;
-use App\Models\BML;
+use App\Filament\Resources\DayTotalResource\Pages;
+use App\Models\DayTotal;
 use App\Models\Restaurant;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,13 +12,13 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class BMLResource extends Resource
+class DayTotalResource extends Resource
 {
-    protected static ?string $model = BML::class;
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $model = DayTotal::class;
+    protected static ?string $navigationIcon = 'heroicon-o-calculator';
     protected static ?string $navigationGroup = 'Restaurant Management';
-    protected static ?int $navigationSort = 5;
-    protected static ?string $modelLabel = 'BML';
+    protected static ?int $navigationSort = 6;
+    protected static ?string $modelLabel = 'Daily Totals';
 
     public static function form(Form $form): Form
     {
@@ -32,6 +32,23 @@ class BMLResource extends Resource
                     
                 Forms\Components\Grid::make()
                     ->schema([
+                        Forms\Components\Select::make('type')
+                            ->label('Type')
+                            ->options([
+                                DayTotal::TYPE_CONSOMMABLE => 'Consommable',
+                                DayTotal::TYPE_CUISINE => 'Cuisine',
+                                DayTotal::TYPE_ECONOMAT => 'Economat',
+                                DayTotal::TYPE_PIZZA => 'Pizza',
+                            ])
+                            ->required(),
+                            
+                        Forms\Components\TextInput::make('day')
+                            ->label('Day')
+                            ->required()
+                            ->numeric()
+                            ->minValue(1)
+                            ->maxValue(31),
+                            
                         Forms\Components\Select::make('month')
                             ->options(array_combine(range(1, 12), [
                                 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
@@ -42,63 +59,15 @@ class BMLResource extends Resource
                         Forms\Components\Select::make('year')
                             ->options(array_combine(range(date('Y')-1, date('Y')+1), range(date('Y')-1, date('Y')+1)))
                             ->required(),
-
-                        Forms\Components\DatePicker::make('date')
-                            ->required()
-                            ->format('Y-m-d'),
-
-                        Forms\Components\Select::make('type')
-                            ->label('Type')
-                            ->options(BML::TYPES)
-                            ->required(),
                     ]),
                     
-                Forms\Components\TextInput::make('fournisseur')
-                    ->label('Fournisseur')
+                Forms\Components\TextInput::make('total')
+                    ->label('Total')
                     ->required()
-                    ->maxLength(255),
-                    
-                Forms\Components\TextInput::make('designation')
-                    ->required()
-                    ->maxLength(255),
-                    
-                Forms\Components\Grid::make()
-                    ->schema([
-                        Forms\Components\TextInput::make('quantity')
-                            ->label('Quantité')
-                            ->required()
-                            ->numeric()
-                            ->minValue(0)
-                            ->step('0.01')
-                            ->reactive(),
-                            
-                        Forms\Components\TextInput::make('unite')
-                            ->label('Unité')
-                            ->required(),
-
-                        Forms\Components\TextInput::make('price')
-                            ->label('Prix')
-                            ->required()
-                            ->numeric()
-                            ->minValue(0)
-                            ->step('0.01')
-                            ->suffix('€')
-                            ->reactive(),
-
-                        Forms\Components\TextInput::make('total_ttc')
-                            ->label('Total TTC')
-                            ->numeric()
-                            ->disabled()
-                            ->dehydrated(true)
-                            ->reactive()
-                            ->afterStateUpdated(function ($state, callable $set, $get) {
-                                // This was incorrect in the original code
-                                $quantity = $get('quantity') ?? 0;
-                                $price = $get('price') ?? 0;
-                                $set('total_ttc', $quantity * $price);
-                            })
-                            ->suffix('€'),
-                    ]),
+                    ->numeric()
+                    ->minValue(0)
+                    ->step('0.01')
+                    ->suffix('€'),
             ]);
     }
 
@@ -111,12 +80,16 @@ class BMLResource extends Resource
                     ->sortable()
                     ->searchable(),
                     
-                Tables\Columns\TextColumn::make('date')
-                    ->date('d/m/Y')
-                    ->sortable(),
-
                 Tables\Columns\TextColumn::make('type')
-                    ->formatStateUsing(fn ($state) => array_flip(BML::TYPES)[$state] ?? $state)
+                    ->formatStateUsing(fn ($state) => [
+                        DayTotal::TYPE_CONSOMMABLE => 'Consommable',
+                        DayTotal::TYPE_CUISINE => 'Cuisine',
+                        DayTotal::TYPE_ECONOMAT => 'Economat',
+                        DayTotal::TYPE_PIZZA => 'Pizza',
+                    ][$state])
+                    ->sortable(),
+                    
+                Tables\Columns\TextColumn::make('day')
                     ->sortable(),
                     
                 Tables\Columns\TextColumn::make('month')
@@ -131,31 +104,8 @@ class BMLResource extends Resource
                 Tables\Columns\TextColumn::make('year')
                     ->sortable(),
                     
-                Tables\Columns\TextColumn::make('fournisseur')
-                    ->label('Fournisseur')
-                    ->searchable()
-                    ->sortable(),
-                    
-                Tables\Columns\TextColumn::make('designation')
-                    ->searchable()
-                    ->sortable(),
-                    
-                Tables\Columns\TextColumn::make('quantity')
-                    ->label('Quantité')
-                    ->numeric(2)
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('unite')
-                    ->label('Unité')
-                    ->sortable(),
-                    
-                Tables\Columns\TextColumn::make('price')
-                    ->label('Prix')
-                    ->money('eur')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('total_ttc')
-                    ->label('Total TTC')
+                Tables\Columns\TextColumn::make('total')
+                    ->label('Total')
                     ->money('eur')
                     ->sortable(),
                     
@@ -169,7 +119,12 @@ class BMLResource extends Resource
                     ->relationship('restaurant', 'name'),
                     
                 Tables\Filters\SelectFilter::make('type')
-                    ->options(BML::TYPES),
+                    ->options([
+                        DayTotal::TYPE_CONSOMMABLE => 'Consommable',
+                        DayTotal::TYPE_CUISINE => 'Cuisine',
+                        DayTotal::TYPE_ECONOMAT => 'Economat',
+                        DayTotal::TYPE_PIZZA => 'Pizza',
+                    ]),
                     
                 Tables\Filters\SelectFilter::make('month')
                     ->options([
@@ -213,9 +168,9 @@ class BMLResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBMLs::route('/'),
-            'create' => Pages\CreateBML::route('/create'),
-            'edit' => Pages\EditBML::route('/{record}/edit'),
+            'index' => Pages\ListDayTotals::route('/'),
+            'create' => Pages\CreateDayTotal::route('/create'),
+            'edit' => Pages\EditDayTotal::route('/{record}/edit'),
         ];
     }
 }
