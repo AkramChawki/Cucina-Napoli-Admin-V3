@@ -13,4 +13,5 @@ return [
     "BL Legume et jus" => "BL Legume et jus",
     "BL Pate a pizza" => "BL Pate a pizza",
     "BL Conserve et pates" => "BL Conserve et pates",
+    "BL Ramadan" => "BL Ramadan",
 ];
