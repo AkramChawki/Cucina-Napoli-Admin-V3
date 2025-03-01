@@ -38,7 +38,6 @@ class ReservationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name'),
                 Tables\Columns\TextColumn::make('email'),
                 Tables\Columns\TextColumn::make('telephone')
                     ->searchable(),
