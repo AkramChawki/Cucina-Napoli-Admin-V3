@@ -20,5 +20,6 @@ return [
     "Cost Economat" => "Cost Economat",
     "Cost Consomable" => "Cost Consomable",
     "BML" => "BML",
-    "Infraction" => "Infraction"
+    "Infraction" => "Infraction",
+    "Ramadan" => "Ramadan"
 ];
