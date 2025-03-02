@@ -11,6 +11,10 @@ class OrderLine extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'selected_options' => 'array',
+    ];
+
     public function product()
     {
         return $this->belongsTo(Product::class);

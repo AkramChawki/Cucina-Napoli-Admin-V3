@@ -1,4 +1,30 @@
 <script src="https://cdn.tailwindcss.com"></script>
+@php
+    function getOptionName($optionId)
+    {
+        $optionsMap = [
+            // Nem options
+            '581' => 'Nem Legume',
+            '582' => 'Nem Viande Hache',
+            '583' => 'Nem Poulet',
+
+            // Jus options
+            '52' => 'Jus Orange',
+            '53' => 'Jus Betravino',
+            '569' => 'Jus Fraise',
+
+            // Pizza options
+            '39' => 'Margarita',
+            '40' => 'Tunara',
+            '41' => 'Funghi',
+            '42' => 'Verdura',
+            '43' => 'Caprese',
+            '44' => 'Peperoni',
+        ];
+
+        return $optionsMap[$optionId] ?? "Option $optionId";
+    }
+@endphp
 <x-filament::page>
     <!-- This example requires Tailwind CSS v2.0+ -->
     <main class="bg-white px-4 pt-16 pb-24 sm:px-6 sm:pt-24 lg:px-8 lg:py-32">
@@ -30,6 +56,16 @@
                                 <h4 class="font-medium text-gray-900">
                                     <a href="#">{{ $item->product->name }} </a>
                                 </h4>
+                                @if (isset($item->product->is_formule) && $item->product->is_formule && !empty($item->selected_options))
+                                    <div class="mt-2 border-l-2 border-green-600 pl-2">
+                                        <h5 class="text-sm font-medium text-green-600">Options de formule:</h5>
+                                        <ul class="mt-1 text-sm text-gray-500">
+                                            @foreach (json_decode($item->selected_options, true) as $optionGroupId => $selectedOptionId)
+                                                <li>• {{ getOptionName($selectedOptionId) }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <p class="mt-2 text-sm text-gray-600">{{ $item->product->text }}</p>
                             </div>
                             <div class="mt-6 flex-1 flex items-end">

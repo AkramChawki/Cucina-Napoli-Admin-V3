@@ -54,7 +54,7 @@ class ProductResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('restaurant')
                     ->multiple()
-                    ->options(Restaurant::all()->pluck("slug", "slug")->mapWithKeys(function ($item, $key) {
+                    ->options(Restaurant::all()->pluck("name", "name")->mapWithKeys(function ($item, $key) {
                         return [Str::lower($key) => $item];
                     }))
                     ->required()
@@ -66,10 +66,12 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('price')
                     ->numeric()
                     ->required(),
+                Forms\Components\Toggle::make('is_formule')
+                    ->label('Est une formule')
+                    ->helperText('Activer si ce produit est une formule avec des options'),
                 Forms\Components\TextInput::make('IDCaisse')
                     ->numeric()
                     ->required(),
-
             ]);
     }
 
@@ -84,6 +86,9 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label("Nom")
                     ->searchable(),
+                Tables\Columns\IconColumn::make('is_formule')
+                    ->label("Formule")
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('restaurant')
                     ->separator(','),
                 Tables\Columns\TextColumn::make('price')
