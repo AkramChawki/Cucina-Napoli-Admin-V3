@@ -19,7 +19,7 @@ return [
     "Cost Pizza" => "Cost Pizza",
     "Cost Economat" => "Cost Economat",
     "Cost Consomable" => "Cost Consomable",
+    "Cost Ramadan" => "Cost Ramadan",
     "BML" => "BML",
     "Infraction" => "Infraction",
-    "Ramadan" => "Ramadan"
 ];
