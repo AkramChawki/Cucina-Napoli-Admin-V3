@@ -22,4 +22,5 @@ return [
     "Cost Ramadan" => "Cost Ramadan",
     "BML" => "BML",
     "Infraction" => "Infraction",
+    "Analytics" => "Analytics"
 ];
