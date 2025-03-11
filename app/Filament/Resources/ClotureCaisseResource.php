@@ -13,11 +13,8 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TimePicker;
-use Filament\Actions\Exports\ExportColumn;
-use Filament\Actions\Exports\Exporter;
-use Filament\Actions\Exports\Models\Export;
-use Filament\Tables\Actions\ExportBulkAction;
-use App\Filament\Exports\ClotureCaisseExporter;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ClotureCaisseResource extends Resource
 {
@@ -207,10 +204,81 @@ class ClotureCaisseResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make()
                     ->requiresConfirmation(),
-                ExportBulkAction::make()
-                    ->exporter(
-                        ClotureCaisseExporter::class,
-                    )
+                Tables\Actions\BulkAction::make('export')
+                    ->label('Exporter vers Excel')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->action(function ($records) {
+                        return response()->streamDownload(function () use ($records) {
+                            // Create a new Excel file
+                            $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+                            $sheet = $spreadsheet->getActiveSheet();
+                            
+                            // Set headers
+                            $headers = [
+                                'Nom', 'Restaurant', 'Date', 'Heure', 'Responsable', 
+                                'Montant Total', 'Montant Espèce', 'Carte Bancaire', 'CB Livraison',
+                                'Virement', 'Chèque', 'Compensation', 'Famille & Accompagnant',
+                                'Erreur Pizza', 'Erreur Cuisine', 'Erreur Serveur', 'Erreur Caisse',
+                                'Perte Emporte', 'Giveaway Pizza', 'Giveaway Pasta', 
+                                'Glovo Espèce', 'Glovo Carte', 'App Espèce', 'App Carte',
+                                'Shooting', 'Commission Glovo'
+                            ];
+                            
+                            // Add headers
+                            foreach ($headers as $columnIndex => $header) {
+                                $sheet->setCellValueByColumnAndRow($columnIndex + 1, 1, $header);
+                            }
+                            
+                            // Add data rows
+                            $rowIndex = 2;
+                            foreach ($records as $record) {
+                                $columnIndex = 1;
+                                
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->name);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->restau);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->date ? $record->date->format('d/m/Y') : '');
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->time ? $record->time->format('H:i') : '');
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->responsable);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->montant);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->montantE);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->cartebancaire);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->cartebancaireLivraison);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->virement);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->cheque);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->compensation);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->familleAcc);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->erreurPizza);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->erreurCuisine);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->erreurServeur);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->erreurCaisse);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->perteEmporte);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->giveawayPizza);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->giveawayPasta);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->glovoE);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->glovoC);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->appE);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->appC);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->shooting);
+                                $sheet->setCellValueByColumnAndRow($columnIndex++, $rowIndex, $record->ComGlovo);
+                                
+                                $rowIndex++;
+                            }
+                            
+                            // Format the cells
+                            $sheet->getStyle('A1:Z1')->getFont()->setBold(true);
+                            
+                            // Auto-size columns
+                            foreach (range('A', 'Z') as $column) {
+                                $sheet->getColumnDimension($column)->setAutoSize(true);
+                            }
+                            
+                            // Output the file
+                            $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                            $writer->save('php://output');
+                        }, 'cloture-caisse-' . now()->format('Y-m-d') . '.xlsx', [
+                            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                        ]);
+                    })
             ]);
     }
 
