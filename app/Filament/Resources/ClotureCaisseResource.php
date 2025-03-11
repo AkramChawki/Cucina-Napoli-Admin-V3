@@ -13,7 +13,10 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TimePicker;
+use Filament\Actions\Exports\Exporter;
+use Filament\Actions\Exports\Models\Export;
 use Filament\Tables\Actions\ExportBulkAction;
+use App\Filament\Exports\ClotureCaisseExporter;
 
 class ClotureCaisseResource extends Resource
 {
@@ -204,6 +207,9 @@ class ClotureCaisseResource extends Resource
                 Tables\Actions\DeleteBulkAction::make()
                     ->requiresConfirmation(),
                 ExportBulkAction::make()
+                    ->exporter(
+                        ClotureCaisseExporter::class,
+                    )
             ]);
     }
 
