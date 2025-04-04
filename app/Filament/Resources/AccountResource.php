@@ -54,6 +54,10 @@ class AccountResource extends Resource
                     ->multiple()
                     ->options(config("roles"))
                     ->required(),
+                Forms\Components\Checkbox::make('guest')
+                    ->label('Compte invité')
+                    ->helperText('Cochez cette case si c\'est un compte invité')
+                    ->nullable(),
             ]);
     }
 
@@ -72,6 +76,9 @@ class AccountResource extends Resource
                         is_array($state) ? implode(', ', $state) : $state
                     ),
                 Tables\Columns\TextColumn::make('role'),
+                Tables\Columns\IconColumn::make('guest')
+                    ->boolean()
+                    ->label('Invité'),
             ])
             ->filters([
                 //
@@ -116,8 +123,7 @@ class AccountResource extends Resource
         $user = auth()->user();
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
-            $user->email == "nimane@cucinanapoli.com" ||
-            $user->email == "basmaa@cucinanapoli.com"
+            $user->email == "nimane@cucinanapoli.com"
         );
     }
 }

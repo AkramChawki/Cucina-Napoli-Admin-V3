@@ -31,6 +31,7 @@ class User extends Authenticatable implements FilamentUser
         'prenom',
         'telephone',
         'points',
+        'guest',
     ];
 
     /**
@@ -53,6 +54,7 @@ class User extends Authenticatable implements FilamentUser
         'password' => 'hashed',
         'role' => 'array',
         'restau' => 'array',
+        'guest' => 'boolean',
     ];
 
     public function canAccessPanel(Panel $panel): bool

@@ -112,10 +112,7 @@ class ControleResource extends Resource
         return $user && (
             $user->email == "admin@cucinanapoli.com" ||
             $user->email == "nimane@cucinanapoli.com" ||
-            $user->email == "mmalika@cucinanapoli.com" ||
-            $user->email == "oilham@cucinanapoli.com" ||
-            $user->email == "dmeriem@cucinanapoli.com" ||
-            $user->email == "bfati@cucinanapoli.com"
+            $user->email == "oilham@cucinanapoli.com"
 
         );
     }
