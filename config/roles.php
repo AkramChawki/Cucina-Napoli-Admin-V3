@@ -22,5 +22,8 @@ return [
     "Cost-Ramadan" => "Cost-Ramadan",
     "BML" => "BML",
     "Infraction" => "Infraction",
-    "Analytics" => "Analytics"
+    "Analytics" => "Analytics",
+    "Menu" => "Menu",
+    "Pointage" => "Pointage",
+    "Employe" => "Employe",
 ];
